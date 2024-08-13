@@ -1,0 +1,97 @@
+<app-layout fc="User Management" mt="User List">
+  <div class="user-list mt-4">
+    <div class="top">
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="formSearch">
+        <app-input-search [control]="getControl('name')"></app-input-search>
+        <select defaultValue="" [formControl]="getControl('status')">
+          <option value="">Select a status</option>
+          <option value="Deactivated">Deactivated</option>
+          <option value="Activated">Activated</option>
+        </select>
+        <button class="btn-base btn-handle" type="submit">Search</button>
+        <button class="btn-base btn-cancel" (click)="clearForm()">Clear search</button>
+      </form>
+    </div>
+    <div class="middle mt-4 d-flex align-content-center justify-content-between">
+      <a href="/user/create" class="btn-link btn-base btn-handle">Create user</a>
+      <button class="btn-base btn-cancel">Export</button>
+    </div>
+    <div class="bottom mt-3">
+      <table class="table table-striped table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone No.</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Address</th>
+            <th scope="col">Role</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (users.length == 0) {
+            <tr>
+              <p class="d-block w-100 text-center">No User Match</p>
+            </tr>
+          }
+          @for (user of users; track user.id) {
+          <tr>
+
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phoneNumber }}</td>
+            <td>{{convertToDDMMYYYY(user.dateOfBirth)}}</td>
+            <td>{{user.address}}</td>
+            <td>{{user.roles[0]}}</td>
+            <td>
+              <div class="status" [class.status-activated]="user.status" [class.status-deactivated]="!user.status">
+                {{ user.status ? 'Activated' : 'Deactivated' }}
+              </div>
+            </td>
+            <td>
+              <div class="btn-icon-group">
+                <button class="btn-icon" (click)="viewUser(user.id)">
+                  <ng-icon [svg]="icons['remixInfoI']" /></button>
+                <button class="btn-icon" (click)="editUser(user.id)">
+                  <ng-icon [svg]="icons['remixPencilLine']" /></button>
+                <button class="btn-icon" (click)="toggleStatus(user.id, !user.status)">@if (user.status) {
+                  <ng-icon [svg]="icons['remixLockLine']" />
+                  } @else {
+                  <ng-icon [svg]="icons['remixLockUnlockLine']" />}</button>
+                <button class="btn-icon" (click)="editUser(user.id)">
+                  <ng-icon [svg]="icons['remixDeleteBin5Line']" /></button>
+              </div>
+              <!-- Thêm các hành động như xem chi tiết, chỉnh sửa, xóa, vv. -->
+            </td>
+          </tr>
+
+          }
+        </tbody>
+      </table>
+      <div class="paga-box d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                <ng-icon [svg]="icons['remixArrowDropLeftLine']" />
+              </a>
+            </li>
+            @for (page of pagesArray; track $index) {
+            <li class="page-item" [class.active]="page === currentPage">
+              <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+            </li>
+            }
+
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                <ng-icon [svg]="icons['remixArrowDropRightLine']" />
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</app-layout>

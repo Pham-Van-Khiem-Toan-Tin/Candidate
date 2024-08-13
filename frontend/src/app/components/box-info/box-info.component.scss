@@ -1,0 +1,24 @@
+.box-info {
+    width: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .label {
+        font-weight: 700;
+    }
+    .info-value {
+        display: inline-block;
+        outline: none;
+        background-color: #ffff !important;
+        height: 38px;
+        border-radius: 8px;
+        color: var(--input-color) !important;
+        font-size: 13px;
+        font-weight: 500;
+        border: 1px solid #e1e2e2;
+        width: 250px;
+        margin: 0;
+        padding: 0 10px;
+        line-height: 38px;
+    }
+}

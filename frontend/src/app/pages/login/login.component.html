@@ -1,0 +1,14 @@
+<div class="login-container">
+  <img src="assets/images/logo.png" alt="logo" class="logo">
+  <h2 class="title">Login into your account</h2>
+  <form class="middle" [formGroup]="loginForm" (ngSubmit)="login()">
+    <app-box-input id="email" name="email" [control]="getControl('email')" label="Email address" type="email" [required]="true" placeholder="example@hotmail.com">
+      <i class="fa-solid fa-envelope"></i>
+    </app-box-input>
+    <app-box-input id="password" name="password" [control]="getControl('password')" label="Password" type="password" [required]="true">
+      <i class="fa-solid fa-lock"></i>
+    </app-box-input>
+    <a class="forgot" routerLink="/forgot-password">Forgot password?</a>
+    <button class="btn-base btn-handle" type="submit">Login</button>
+  </form>
+</div>

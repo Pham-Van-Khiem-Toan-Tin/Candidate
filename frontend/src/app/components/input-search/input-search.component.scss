@@ -1,0 +1,22 @@
+
+
+.input-search {
+    width: 250px;
+    position: relative;
+    input {
+        padding: 0 40px 0 10px;
+    }
+    .icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 38px;
+        width: 38px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #c0c2c8;
+        background-color:transparent;
+    }
+}

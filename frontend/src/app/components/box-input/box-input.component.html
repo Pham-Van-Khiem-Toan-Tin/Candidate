@@ -1,0 +1,9 @@
+<div class="input-box">
+  <label [htmlFor]="id">{{label}}</label>
+  <div class="input-icon">
+    <input class="input" [value]="innerValue" [formControl]="control" [type]="type" [id]="id" [name]="name" [required]="required" [placeholder]="placeholder">
+    <div class="icon">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

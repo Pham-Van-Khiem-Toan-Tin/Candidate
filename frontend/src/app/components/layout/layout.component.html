@@ -1,0 +1,52 @@
+<div class="layout-container">
+  <div class="sidebar">
+    <div class="top">
+      <div class="logo">
+        <img src="assets/images/logo.png" alt="logo" class="logo">
+      </div>
+      <ul class="menus">
+        <li class="menu-item">
+          <ng-icon [svg]="icons['remixIdCardLine']" />
+          <div class="menu-item-content">Candidate Management</div>
+        </li>
+        <li class="menu-item">
+          <ng-icon [svg]="icons['remixMegaphoneLine']" />
+          <div class="menu-item-content">Event Management</div>
+        </li>
+        <li class="menu-item">
+          <ng-icon [svg]="icons['remixPieChartLine']" />
+          <div class="menu-item-content">Report Management</div>
+        </li>
+        <li class="menu-item">
+          <ng-icon [svg]="icons['remixBox3Line']" />
+          <div class="menu-item-content">Data Campaign</div>
+        </li>
+        <li class="menu-item">
+          <ng-icon [svg]="icons['remixGroupLine']" />
+          <div class="menu-item-content">User Management</div>
+        </li>
+      </ul>
+    </div>
+    <div class="bottom">
+      <div class="account-info">
+        <div class="avatar">
+          <img src="" alt="avatar">
+        </div>
+        <div class="name">Test</div>
+      </div>
+      <button>Logout</button>
+    </div>
+  </div>
+  <div class="content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">{{fc}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{mt}}</li>
+      </ol>
+    </nav>
+    <div class="content-title">
+        {{mt}}
+    </div>
+    <ng-content></ng-content>
+  </div>
+</div>
