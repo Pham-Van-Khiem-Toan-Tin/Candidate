@@ -23,8 +23,8 @@ namespace Candidate.Controllers
             _signInManager = signInManager;
             _tokenService = tokenService;
         }
-        [Authorize("Admin")]
-        [HttpPost("register")]
+        [Authorize(Roles = "Admin")]
+        [HttpPost("create")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO) 
         {
             try
@@ -33,7 +33,7 @@ namespace Candidate.Controllers
                     return BadRequest(ModelState);
                 var user = new User {
                     Id = registerDTO.Email,
-                    UserName = "test123" + registerDTO.PhoneNumber,
+                    UserName = registerDTO.Email,
                     FullName = registerDTO.FullName,
                     Email = registerDTO.Email,
                     PhoneNumber = registerDTO.PhoneNumber,
@@ -41,7 +41,7 @@ namespace Candidate.Controllers
                     DateOfBirth = registerDTO.DateOfBirth,
                     Status = false
                 };
-                var createUser = await _userManager.CreateAsync(user, registerDTO.Password);
+                var createUser = await _userManager.CreateAsync(user, "123456789");
                 if (createUser.Succeeded) 
                 {
                     var roleResult = await _userManager.AddToRoleAsync(user, "USER");

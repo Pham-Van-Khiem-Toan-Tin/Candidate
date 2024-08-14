@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-*, ::after, ::before {
+*,
+::after,
+::before {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -11,7 +13,30 @@
   --color: #555555;
   --primary-color: #183cfb;
   --input-color: #626263;
-  --content-color: #E7EFF2;
+  --content-color: #e7eff2;
+  --height-table-list: calc(100vh - 8rem - 238px);
+}
+.form-multiple-input {
+  font-weight: 700;
+  font-size: 15px;
+  .form-content {
+    padding-right: 16%;
+    margin-bottom: 1rem;
+    label {
+      height: fit-content;
+    }
+    input {
+      width: 250px;
+      font-size: 15px;
+      padding: 0 10px;
+      border-radius: 8px;
+    }
+  }
+  button,
+  a {
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
 }
 .btn-link {
   text-decoration: none;
@@ -27,9 +52,15 @@
   padding: 10px;
   font-weight: 700;
 }
+button:disabled {
+  opacity: 0.8;
+}
 .btn-cancel {
   background-color: #fff;
   color: var(--primary-color);
+  &:hover {
+    color: var(--primary-color);
+  }
 }
 .btn-handle {
   color: #fff;
@@ -56,4 +87,27 @@ select {
   border: none;
   outline: none;
   background-color: transparent;
+}
+.table-list {
+  thead {
+    width: calc(
+      100% - 1em
+    ); /* scrollbar is average 1em/16px width, remove it from thead width */
+  }
+  thead,
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* even columns width , fix width of table too*/
+  }
+  tbody {
+    height: var(--height-table-list);
+    overflow-y: auto;
+    display: block;
+  }
+  td, th {
+    word-wrap: break-word; /* Ngắt dòng từ khi vượt quá chiều rộng */
+    text-overflow: ellipsis; /* Cắt bớt nội dung với dấu "..." nếu quá dài */
+    overflow: hidden;
+  }
 }

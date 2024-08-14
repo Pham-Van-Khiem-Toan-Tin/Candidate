@@ -1,5 +1,45 @@
 <app-layout fc="User Management" mt="Create User">
     <div class="user-create">
+        <form class="form-multiple-input" [formGroup]="userForm" (ngSubmit)="createUser()">
+            <p class="form-title">I. User Information</p>
+            <div class="row">
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="name">
+                        Full name <span class="text-danger">*</span>
+                    </label>
+                    <input id="name" formControlName="fullName" type="text" placeholder="Enter full name">
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="email">
+                        Email <span class="text-danger">*</span>
+                    </label>
+                    <input id="email" formControlName="email" type="email" placeholder="Enter email">
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="DOB">
+                        D.O.B <span class="text-danger">*</span>
+                    </label>
+                    <input id="DOB" formControlName="DOB"  value="" type="date">
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="address">
+                        Address <span class="text-danger">*</span>
+                    </label>
+                    <input id="address" formControlName="address"  type="text" placeholder="Enter address">
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="phoneNo">
+                        Phone number <span class="text-danger">*</span>
+                    </label>
+                    <input id="phoneNo" formControlName="phoneNo"  type="tel" placeholder="Enter phone number">
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-5">
+                <a href="/users" class="btn-link text-center btn-base btn-cancel">Cancel</a>
+                <button [disabled]="disabled" type="submit" class="btn-base btn-handle">Save User</button>
+            </div>
+        </form>
+        
         
     </div>
 </app-layout>

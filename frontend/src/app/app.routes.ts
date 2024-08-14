@@ -12,9 +12,9 @@ export const routes: Routes = [
     {path: "", redirectTo: "/login", pathMatch: "full"},
     {path: "login", component: LoginComponent},
     {path: "users", component: UserComponent, canActivate: [expenseGuard]},
-    {path: "user/view/:id", component: UserDetailComponent, canActivate: [expenseGuard]},
-    {path: "user/edit/:id", component: UserEditComponent, canActivate: [expenseGuard]},
+    {path: "users/view/:id", component: UserDetailComponent, canActivate: [expenseGuard]},
+    {path: "users/edit/:id", component: UserEditComponent, canActivate: [expenseGuard]},
     {path: "forgot-password", component: ForgotPasswordComponent},
     {path: "reset-password", component: ResetPasswordComponent},
-    {path: "user/create", component: CreateUserComponent}
+    {path: "users/create", component: CreateUserComponent}
 ];

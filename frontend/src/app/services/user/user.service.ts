@@ -17,6 +17,15 @@ export class UserService {
       }&status=${searchForm.get('status')?.value}`
     );
   }
+  createUser(userFrom: FormGroup): Observable<any> {
+    return this.http.post<any>(USER_API_ENDPOINT.CREATE_USER, {
+      FullName: userFrom.get('fullName')?.value,
+      Email: userFrom.get('email')?.value,
+      PhoneNumber: userFrom.get('phoneNo')?.value,
+      Address: userFrom.get('address')?.value,
+      DateOfBirth: userFrom.get('DOB')?.value
+    });
+  }
   async changeActivated(
     id: string,
     status: boolean,

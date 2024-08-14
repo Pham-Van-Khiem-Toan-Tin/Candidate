@@ -1,21 +1,29 @@
 import { Component } from '@angular/core';
 import { BoxInputComponent } from '../../components/box-input/box-input.component';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
+import { remixLockLine } from '@ng-icons/remixicon';
+import { NgIconComponent } from '@ng-icons/core';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [BoxInputComponent, ReactiveFormsModule],
+  imports: [BoxInputComponent, ReactiveFormsModule, NgIconComponent],
   templateUrl: './forgot-password.component.html',
-  styleUrl: './forgot-password.component.scss'
+  styleUrl: './forgot-password.component.scss',
 })
 export class ForgotPasswordComponent {
   forgotForm: FormGroup;
-  constructor(
-    private authService: AuthService,
-    private fb: FormBuilder
-  ) {
+  icons: { [key: string]: any } = {
+    remixLockLine,
+  };
+  constructor(private authService: AuthService, private fb: FormBuilder) {
     this.forgotForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });

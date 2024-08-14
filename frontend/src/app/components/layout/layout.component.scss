@@ -1,104 +1,105 @@
 $menu-color: #282929;
 .layout-container {
-    width: 100%;
+  width: 100%;
+  .sidebar {
     display: flex;
-    flex-direction: row;
-    min-height: 100vh;
-    .sidebar {
-        flex: none;
-        order: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-bottom: 1rem;
+    background-color: var(--backgroundColor);
+    .top {
+      .logo {
+        width: inherit;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 250px;
+          height: 150px;
+        }
+      }
+      .menus {
+        list-style: none;
+        padding: 0;
+        .menu-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: $menu-color;
+          font-weight: 900;
+          padding: 1.5rem 0;
+            &.active {
+                border-left: 3px solid var(--primary-color);
+                color: var(--primary-color);
+                background-color: #fff;
+            }
+          ng-icon {
+            font-size: 1.4rem;
+          }
+          .menu-item-content {
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+    .bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .account-info {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        width: 250px;
-        background-color: var(--backgroundColor);
-        .top {
-            .logo {
-                width: inherit;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                img {
-                    width: 250px;
-                    height: 150px;
-                }
-            }
-            .menus {
-                list-style: none;
-                padding: 0;
-                .menu-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    color: $menu-color;
-                    font-weight: 900;
-                    margin: 1.5rem 0;
-                    ng-icon {
-                        font-size: 1.4rem;
-                    }
-                    .menu-item-content {
-                        font-size: 0.7rem;
-                        margin-top: 0.5rem;
-                        text-transform: uppercase;
-                    }
-                }
-            }
+        align-items: center;
+        justify-content: center;
+        .avatar {
+          img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+          }
         }
-        .bottom {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            .account-info {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                .avatar {
-                    img {
-                        width: 20px;
-                        height: 20px;
-                        border-radius: 50%;
-                    }
-                }
-                .name {
-                    font-size: 1rem;
-                    font-weight: 700;
-                }
-            }
-            button {
-                border: none;
-                outline: none;
-                text-decoration: underline;
-                font-weight: 500;
-                color: var(--primary-color);
-            }
+        .name {
+          font-size: 1rem;
+          font-weight: 700;
         }
-        
+      }
+      button {
+        border: none;
+        outline: none;
+        text-decoration: underline;
+        font-weight: 500;
+        color: var(--primary-color);
+      }
     }
-    .content {
-        flex: 1;
-        order: 2;
-        padding: 1rem;
-        overflow-x: hidden;
-        overflow-y: auto;
-        nav {
-            .breadcrumb {
-                .breadcrumb-item {
-                    font-size: 1.2rem;
-                    font-weight: 500;
-                    color: var(--primary-color);
-                    a {
-                        text-decoration: none;
-                    }
-                }
-            }
+  }
+  .content {
+    margin-left: 250px;
+    padding: 1rem;
+    min-height: 100vh;
+    nav {
+      .breadcrumb {
+        .breadcrumb-item {
+          font-size: 1.2rem;
+          font-weight: 500;
+          color: var(--primary-color);
+          a {
+            text-decoration: none;
+          }
         }
-        .content-title {
-            font-size: 1.5rem;
-            // margin-left: 1rem;
-            font-weight: 500;
-        }
+      }
     }
+    .content-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
 }

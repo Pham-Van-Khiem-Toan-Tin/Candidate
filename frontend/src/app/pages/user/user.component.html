@@ -13,12 +13,12 @@
       </form>
     </div>
     <div class="middle mt-4 d-flex align-content-center justify-content-between">
-      <a href="/user/create" class="btn-link btn-base btn-handle">Create user</a>
+      <a href="/users/create" class="btn-link btn-base btn-handle">Create user</a>
       <button class="btn-base btn-cancel">Export</button>
     </div>
     <div class="bottom mt-3">
-      <table class="table table-striped table-borderless">
-        <thead>
+      <table class="table table-responsive table-list table-striped table-borderless">
+        <thead class="table-light">
           <tr>
             <th scope="col">Full Name</th>
             <th scope="col">Email</th>
@@ -60,7 +60,7 @@
                   <ng-icon [svg]="icons['remixLockLine']" />
                   } @else {
                   <ng-icon [svg]="icons['remixLockUnlockLine']" />}</button>
-                <button class="btn-icon" (click)="editUser(user.id)">
+                <button class="btn-icon text-danger" (click)="editUser(user.id)">
                   <ng-icon [svg]="icons['remixDeleteBin5Line']" /></button>
               </div>
               <!-- Thêm các hành động như xem chi tiết, chỉnh sửa, xóa, vv. -->

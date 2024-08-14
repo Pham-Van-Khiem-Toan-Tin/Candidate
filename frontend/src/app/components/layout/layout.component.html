@@ -21,7 +21,7 @@
           <ng-icon [svg]="icons['remixBox3Line']" />
           <div class="menu-item-content">Data Campaign</div>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" routerLink="/users" routerLinkActive="active">
           <ng-icon [svg]="icons['remixGroupLine']" />
           <div class="menu-item-content">User Management</div>
         </li>
@@ -47,6 +47,6 @@
     <div class="content-title">
         {{mt}}
     </div>
-    <ng-content></ng-content>
+      <ng-content></ng-content>
   </div>
 </div>

@@ -1,30 +1,55 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutComponent } from '../../components/layout/layout.component';
 import { InputSearchComponent } from '../../components/input-search/input-search.component';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
 import moment from 'moment';
 import { Router } from '@angular/router';
 import { NgIconComponent } from '@ng-icons/core';
-import { remixArrowDropLeftLine, remixArrowDropRightLine, remixDeleteBin5Line, remixInfoI, remixLockLine, remixLockUnlockLine, remixPencilLine } from '@ng-icons/remixicon';
-
+import {
+  remixArrowDropLeftLine,
+  remixArrowDropRightLine,
+  remixDeleteBin5Line,
+  remixInfoI,
+  remixLockLine,
+  remixLockUnlockLine,
+  remixPencilLine,
+} from '@ng-icons/remixicon';
+import {
+  NgLabelTemplateDirective,
+  NgOptionTemplateDirective,
+  NgSelectComponent,
+} from '@ng-select/ng-select';
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [LayoutComponent, InputSearchComponent, ReactiveFormsModule, NgIconComponent],
+  imports: [
+    LayoutComponent,
+    InputSearchComponent,
+    ReactiveFormsModule,
+    NgIconComponent,
+    NgSelectComponent,
+    NgOptionTemplateDirective,
+    NgLabelTemplateDirective,
+  ],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
+  styleUrl: './user.component.scss',
 })
 export class UserComponent implements OnInit {
-  icons: {[key: string]: any} = {
+  icons: { [key: string]: any } = {
     remixInfoI,
     remixPencilLine,
     remixDeleteBin5Line,
     remixLockLine,
     remixLockUnlockLine,
     remixArrowDropLeftLine,
-    remixArrowDropRightLine
-  }
+    remixArrowDropRightLine,
+  };
   searchForm: FormGroup;
   users: any = [];
   totalPages: number = 0;
@@ -49,7 +74,10 @@ export class UserComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.totalPages = data.totalPages;
-        this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.users = data.items;
       },
       error: (error) => {
@@ -58,7 +86,7 @@ export class UserComponent implements OnInit {
       complete: () => {
         console.log('User request complete');
       },
-  });
+    });
   }
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
@@ -66,9 +94,9 @@ export class UserComponent implements OnInit {
       this.loadUsers();
     }
   }
-  convertToDDMMYYYY(str: Date): string{
+  convertToDDMMYYYY(str: Date): string {
     return moment(str).format('DD/MM/YYYY');
-    }
+  }
   onSearch(): void {
     console.log(this.searchForm.value);
     this.currentPage = 1;
@@ -78,15 +106,15 @@ export class UserComponent implements OnInit {
     return this.searchForm.get(name) as FormControl;
   }
   viewUser(id: string): void {
-    this.router.navigate([`user/view/${id}`])
+    this.router.navigate([`user/view/${id}`]);
   }
   editUser(id: string): void {
-    this.router.navigate([`user/edit/${id}`])
+    this.router.navigate([`user/edit/${id}`]);
   }
   async toggleStatus(id: string, isActive: boolean): Promise<void> {
     console.log(isActive);
     let result = await this.userService.changeActivated(id, isActive);
-    if ( result) {
+    if (result) {
       this.loadUsers();
     } else {
       console.error('Error changing activation status:');

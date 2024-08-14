@@ -9,16 +9,27 @@ import {
   Validators,
 } from '@angular/forms';
 import { BoxInputComponent } from '../../components/box-input/box-input.component';
+import { NgIconComponent } from '@ng-icons/core';
+import { remixLockLine, remixMailLine } from '@ng-icons/remixicon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, BoxInputComponent, ReactiveFormsModule],
+  imports: [
+    RouterLink,
+    BoxInputComponent,
+    ReactiveFormsModule,
+    NgIconComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  icons: { [key: string]: any } = {
+    remixMailLine,
+    remixLockLine
+  }
   constructor(
     private authService: AuthService,
     private router: Router,
