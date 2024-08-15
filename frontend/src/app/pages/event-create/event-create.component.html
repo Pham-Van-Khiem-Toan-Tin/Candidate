@@ -1,0 +1,112 @@
+<app-layout fc="Event Management" mt="Create Event">
+  <div class="event-create">
+    <form class="form-multiple-input" [formGroup]="eventForm" (ngSubmit)="createEvent()">
+      <p class="form-title">I. Event Summary</p>
+      <div class="row mb-5">
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="event-id">
+            Event id<span class="text-danger">*</span>
+          </label>
+          <input id="event-id" formControlName="eventId" type="text" placeholder="example-event-2024">
+        </div>
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="event-name">
+            Event name<span class="text-danger">*</span>
+          </label>
+          <input id="event-name" formControlName="eventName" type="text" placeholder="Enter event name">
+        </div>
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="startDate">
+            Start Date<span class="text-danger">*</span>
+          </label>
+          <input id="startDate" formControlName="startDate" value="" type="date">
+        </div>
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="endDate">
+            End Date<span class="text-danger">*</span>
+          </label>
+          <input id="endDate" formControlName="endDate" value="" type="date">
+        </div>
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="chanel">
+            Chanel<span class="text-danger">*</span>
+          </label>
+          <ng-select labelForId="chanel" formControlName="chanel" [closeOnSelect]="false" [searchable]="false"
+            placeholder="Enter event chanels" [multiple]="true">
+            @for (chanel of channels; track chanel.id) {
+            <ng-option [value]="chanel.id">{{chanel.name}}</ng-option>
+            }
+          </ng-select>
+        </div>
+
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="partner">
+            Partners
+          </label>
+          <ng-select labelForId="partner" formControlName="partners" [closeOnSelect]="false" [searchable]="false"
+            placeholder="Enter event partners" [multiple]="true">
+            <!-- @for (chanel of channels; track chanel.id) {
+            <ng-option [value]="chanel.id">{{chanel.name}}</ng-option>
+            } -->
+          </ng-select>
+        </div>
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="target">
+            Target<span class="text-danger">*</span>
+          </label>
+          <input id="target" formControlName="target" type="text" placeholder="Enter event target">
+        </div>
+      </div>
+      <p class="form-title">II. Event Results</p>
+      <div class="row">
+        <div class="form-content d-flex align-items-center justify-content-between col-6">
+          <label for="totalParticipants">
+            Total Participants
+          </label>
+          <input id="totalParticipants" formControlName="totalParticipants" type="text"
+            placeholder="Enter total Participants">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-content d-flex justify-content-between col-7">
+          <label for="note">
+            Note
+          </label>
+          <textarea id="note" formControlName="eventId" type="text" placeholder="Enter event notes"></textarea>
+        </div>
+      </div>
+      <p class="form-title">List of candidate</p>
+      <div class="row">
+        <div class="col-8">
+          <table class="table table-responsive table-striped table-borderless">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">File Name</th>
+                <th scope="col">Chanel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2" class="text-center text-danger td-warning">List of candidate will be automatically
+                  update by the system from Candidate module</td>
+              </tr>
+              <tr>
+                <td class="td-blank" colspan="2"></td>
+              </tr>
+              <tr>
+                <td class="td-blank" colspan="2"></td>
+              </tr>
+              <tr>
+                <td class="td-blank" colspan="2"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-center gap-5">
+        <a href="/events" class="btn-link text-center btn-base btn-cancel">Cancel</a>
+        <button [disabled]="disabled" type="submit" class="btn-base btn-handle">Save Event</button>
+      </div>
+    </form>
+  </div>
+</app-layout>

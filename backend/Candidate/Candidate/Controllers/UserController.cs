@@ -257,35 +257,6 @@ namespace Candidate.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Leader")]
-        [HttpPost("assign-role")]
-        public async Task<IActionResult> AssignRole([FromBody] AssignRoleDTO assignRoleDTO)
-        {
-            var user = await _userManager.FindByIdAsync(assignRoleDTO.UserId);
-            if (user == null)
-                return NotFound("User not found.");
-
-            var currentRoles = await _userManager.GetRolesAsync(user);
-
-            // Thêm vai trò nếu chưa có
-            if (!currentRoles.Contains(assignRoleDTO.Roles))
-            {
-                var addResult = await _userManager.AddToRoleAsync(user, assignRoleDTO.Roles);
-                if (!addResult.Succeeded)
-                    return StatusCode(500, addResult.Errors);
-            }
-
-            // Loại bỏ vai trò nếu không còn nằm trong yêu cầu
-            var rolesToRemove = currentRoles.Where(role => role != assignRoleDTO.Roles).ToList();
-            if (rolesToRemove.Any())
-            {
-                var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
-                if (!removeResult.Succeeded)
-                    return StatusCode(500, removeResult.Errors);
-            }
-
-            return Ok("Role updated successfully.");
-        }
         [Authorize(Roles ="Admin")]
         [HttpPatch("activate/{id}")]
         public async Task<IActionResult> ActivateUser(string id, [FromBody] ActivatedDTO activatedDTO)

@@ -58,8 +58,8 @@ builder.Services.AddAuthentication(options =>
     });
 
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IChanelRepository, ChanelRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

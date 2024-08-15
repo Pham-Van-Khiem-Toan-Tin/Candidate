@@ -11,7 +11,7 @@ import { AlertComponent } from './components/alert/alert.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'frontend';
+  title = 'Candidate';
   alertMessage: string = "";
   alertType: 'success' | 'warning' | 'error' = 'success';
 

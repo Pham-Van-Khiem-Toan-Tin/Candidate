@@ -1,0 +1,21 @@
+.event-list {
+  button,
+  .btn-link {
+    width: 100px;
+    font-size: 0.8rem;
+    padding: 8px;
+    text-align: center;
+  }
+  .formSearch {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    input {
+      width: 250px;
+      padding: 0 10px 0 10px;
+    }
+    span {
+        color: var(--span-color-des);
+    }
+  }
+}

@@ -39,21 +39,5 @@
       width: auto;
     }
   }
-  .pagination {
-    .page-item {
-      &.active .page-link {
-        border-color:  #dee2e6;
-      }
-        a {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 35px;
-          height: 35px;
-          color: #000;
-          background-color: transparent;
-          font-weight: 700;
-        }
-    }
-  }
+  
 }

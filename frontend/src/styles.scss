@@ -20,11 +20,36 @@
 .form-multiple-input {
   font-weight: 700;
   font-size: 15px;
+  table {
+    border: 1px solid #DDDDDD !important;
+  }
+  .td-warning {
+    font-weight: 400;
+    font-style: italic;
+  }
+  .td-blank {
+    height: 38.5px;
+  }
   .form-content {
     padding-right: 16%;
     margin-bottom: 1rem;
     label {
       height: fit-content;
+    }
+    textarea {
+      width: 350px;
+      min-height: 155px;
+      font-size: 15px;
+      padding: 0 10px;
+      outline: none;
+      background-color: #ffff !important;
+      height: 38px;
+      border-radius: 8px;
+      color: var(--input-color) !important;
+      font-weight: 500;
+      border: 1px solid #e1e2e2;
+      margin: 0;
+      line-height: 38px;
     }
     span.description {
       width: 250px;
@@ -35,17 +60,55 @@
       font-weight: 400;
       line-height: 38px;
     }
-    input, select {
+    input,
+    select {
       width: 250px;
       font-size: 15px;
       padding: 0 10px;
       border-radius: 8px;
+    }
+    .ng-select {
+      .ng-select-container {
+        border-radius: 8px;
+      }
+      .ng-value-container {
+        padding-top: 0;
+        .ng-placeholder {
+          top: 8px;
+          font-weight: 500;
+          padding-bottom: 0;
+        }
+
+        .ng-input {
+          padding-bottom: 0;
+        }
+      }
+    }
+    .ng-select-container {
+      width: 250px;
     }
   }
   button,
   a {
     padding: 5px 10px;
     border-radius: 5px;
+  }
+}
+.pagination {
+  .page-item {
+    &.active .page-link {
+      border-color: #dee2e6;
+    }
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      color: #000;
+      background-color: transparent;
+      font-weight: 700;
+    }
   }
 }
 .btn-link {

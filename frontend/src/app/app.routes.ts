@@ -8,15 +8,18 @@ import { UserDetailComponent } from './pages/user-detail/user-detail.component';
 import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { CreateUserComponent } from './pages/create-user/create-user.component';
 import { EventComponent } from './pages/event/event.component';
+import { EventCreateComponent } from './pages/event-create/event-create.component';
 
 export const routes: Routes = [
     {path: "", redirectTo: "/login", pathMatch: "full"},
     {path: "login", component: LoginComponent},
+    {path: "forgot-password", component: ForgotPasswordComponent},
+    {path: "reset-password", component: ResetPasswordComponent},
     {path: "users", component: UserComponent, canActivate: [expenseGuard]},
     {path: "users/view/:id", component: UserDetailComponent, canActivate: [expenseGuard]},
     {path: "users/edit/:id", component: UserEditComponent, canActivate: [expenseGuard]},
-    {path: "forgot-password", component: ForgotPasswordComponent},
-    {path: "reset-password", component: ResetPasswordComponent},
-    {path: "users/create", component: CreateUserComponent},
-    {path: "events", component: EventComponent, canActivate: [expenseGuard]}
+    {path: "users/create", component: CreateUserComponent, canActivate: [expenseGuard]},
+    {path: "events", component: EventComponent, canActivate: [expenseGuard]},
+    {path: "events/create", component: EventCreateComponent, canActivate: [expenseGuard]}
+
 ];

@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Candidate.Repository
 {
-    public class UserRepository : IUserRepository
+    public class ChanelRepository : IChanelRepository
     {
         private readonly ApplicationDBContext _context;
 
-        public UserRepository(ApplicationDBContext context)
+        public ChanelRepository(ApplicationDBContext context)
         {
             _context = context;
         }
-        public Task<List<User>> getAllUsers()
+        public Task<List<Chanel>> GetAll()
         {
-            return _context.User.ToListAsync();
+            return _context.Chanels.ToListAsync();
         }
     }
 }

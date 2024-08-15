@@ -34,10 +34,13 @@ $menu-color: #282929;
           color: $menu-color;
           font-weight: 900;
           padding: 1.5rem 0;
+          padding-left: 3px;
+          cursor: pointer;
             &.active {
                 border-left: 3px solid var(--primary-color);
                 color: var(--primary-color);
                 background-color: #fff;
+                padding-left: 0;
             }
           ng-icon {
             font-size: 1.4rem;
