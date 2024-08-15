@@ -25,6 +25,11 @@ import {
   NgOptionTemplateDirective,
   NgSelectComponent,
 } from '@ng-select/ng-select';
+import { ModalConfirmComponent } from '../../components/modal-confirm/modal-confirm.component';
+import Modal from '../../models/Modal';
+import { AlertService } from '../../services/alert/alert.service';
+import { catchError, throwError } from 'rxjs';
+
 @Component({
   selector: 'app-user',
   standalone: true,
@@ -36,6 +41,7 @@ import {
     NgSelectComponent,
     NgOptionTemplateDirective,
     NgLabelTemplateDirective,
+    ModalConfirmComponent,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -52,6 +58,7 @@ export class UserComponent implements OnInit {
   };
   searchForm: FormGroup;
   users: any = [];
+  modal: Modal = new Modal();
   totalPages: number = 0;
   currentPage: number = 1;
   pageSize: number = 10; // Số lượng người dùng trên mỗi trang
@@ -59,7 +66,8 @@ export class UserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -97,6 +105,29 @@ export class UserComponent implements OnInit {
   convertToDDMMYYYY(str: Date): string {
     return moment(str).format('DD/MM/YYYY');
   }
+  exportUsers(): void {
+    this.userService.exportUsers().pipe(
+      catchError(error => {
+        console.error('Error exporting users', error);
+        return throwError(() => error);
+      })
+    )
+    .subscribe(response => {
+      if (response instanceof Blob) {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Users.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove(); // Xóa thẻ a khỏi DOM
+      } else {
+        console.error('Unexpected response type');
+      }
+    });
+
+  }
   onSearch(): void {
     console.log(this.searchForm.value);
     this.currentPage = 1;
@@ -105,11 +136,40 @@ export class UserComponent implements OnInit {
   getControl(name: string) {
     return this.searchForm.get(name) as FormControl;
   }
+  openModalDelete(user: any): void {
+    console.log(user);
+
+    this.modal = {
+      title: 'Are you want to delete?',
+      content: `Are you sure you want to delete ${user.email} ?`,
+      description: "All user's data will be lost.",
+      data: user,
+    };
+  }
   viewUser(id: string): void {
-    this.router.navigate([`user/view/${id}`]);
+    this.router.navigate([`users/view/${id}`]);
   }
   editUser(id: string): void {
-    this.router.navigate([`user/edit/${id}`]);
+    this.router.navigate([`users/edit/${id}`]);
+  }
+  deleteUser(): void {
+    if (this.modal?.data?.id != null) {
+      this.userService.deleteUser(this.modal.data.id).subscribe({
+        next: (data) => {
+          this.alertService.showAlert(data.message, 'success');
+          setTimeout(() => {
+            this.alertService.clearAlert();
+            this.loadUsers();
+          }, 1000);
+        },
+        error: (err) => {
+          this.alertService.showAlert(err, 'error');
+        },
+        complete: () => {
+          // console.log('Login request complete');
+        },
+      });
+    }
   }
   async toggleStatus(id: string, isActive: boolean): Promise<void> {
     console.log(isActive);
@@ -121,7 +181,10 @@ export class UserComponent implements OnInit {
     }
   }
   clearForm(): void {
-    this.searchForm.reset();
+    this.searchForm.patchValue({
+      name: '',
+      status: '',
+    });
     this.currentPage = 1;
     this.loadUsers();
   }

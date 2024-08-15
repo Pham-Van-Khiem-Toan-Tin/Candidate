@@ -1,3 +1,68 @@
 <app-layout fc="User Management" mt="User detail">
-    
+    <div class="user-detail">
+        <div class="form-multiple-input">
+            <p class="form-title">I. User Information</p>
+            <div class="row">
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="name">
+                        Full name
+                    </label>
+                    <span class="description">
+                        {{user.fullName}}
+                    </span>
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="email">
+                        Email
+                    </label>
+                    <span class="description text-primary text-decoration-underline">
+                        {{user.email}}
+                    </span>
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="DOB">
+                        D.O.B
+                    </label>
+                    <span class="description">
+                        {{user.dob}}
+                    </span>
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="address">
+                        Address
+                    </label>
+                    <span class="description">
+                        {{user.address}}
+                    </span>
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="phoneNo">
+                        Phone number
+                    </label>
+                    <span class="description">
+                        {{user.phoneNo}}
+                    </span>
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="role">
+                        Role
+                    </label>
+                    <span class="description">
+                        {{user.role}}
+                    </span>
+                </div>
+                <div class="form-content d-flex align-items-center justify-content-between col-6">
+                    <label for="status">
+                        Status
+                    </label>
+                    <span class="description" [class]="user.status ? 'text-success': 'text-danger'">
+                        {{user.status ? 'Activated' : 'Deactivated'}}
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-5">
+                <a href="/users" class="btn-link ms-auto text-center btn-base btn-cancel">Return</a>
+            </div>
+        </div>
+    </div>
 </app-layout>

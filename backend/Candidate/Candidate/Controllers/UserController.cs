@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System.Linq;
 
 namespace Candidate.Controllers
@@ -17,8 +18,10 @@ namespace Candidate.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public UserController(UserManager<User> userManager,RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager, ITokenService tokenService)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
@@ -32,8 +35,8 @@ namespace Candidate.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
                 var user = new User {
-                    Id = registerDTO.Email,
-                    UserName = registerDTO.Email,
+                    Id = registerDTO.UserName,
+                    UserName = registerDTO.UserName,
                     FullName = registerDTO.FullName,
                     Email = registerDTO.Email,
                     PhoneNumber = registerDTO.PhoneNumber,
@@ -41,13 +44,13 @@ namespace Candidate.Controllers
                     DateOfBirth = registerDTO.DateOfBirth,
                     Status = false
                 };
-                var createUser = await _userManager.CreateAsync(user, "123456789");
+                var createUser = await _userManager.CreateAsync(user, "0123456789Ab.");
                 if (createUser.Succeeded) 
                 {
                     var roleResult = await _userManager.AddToRoleAsync(user, "USER");
                     if (roleResult.Succeeded)
                     {
-                        return Ok("user created");
+                        return Ok(new { message = "User created successfully"});
                     }
                     else
                     {
@@ -182,16 +185,34 @@ namespace Candidate.Controllers
             {
                 user.DateOfBirth = editUserDTO.DateOfBirth;
             }
+            var currentRoles = await _userManager.GetRolesAsync(user);
+
+            // Thêm vai trò nếu chưa có
+            if (!currentRoles.Contains(editUserDTO.Role))
+            {
+                var addResult = await _userManager.AddToRoleAsync(user, editUserDTO.Role);
+                if (!addResult.Succeeded)
+                    return StatusCode(500, addResult.Errors);
+            }
+
+            // Loại bỏ vai trò nếu không còn nằm trong yêu cầu
+            var rolesToRemove = currentRoles.Where(role => role != editUserDTO.Role).ToList();
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+                if (!removeResult.Succeeded)
+                    return StatusCode(500, removeResult.Errors);
+            }
 
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
-                return Ok("User updated successfully.");
+                return Ok(new { message = "User updated successfully" });
             else
                 return StatusCode(500, result.Errors);
         }
         [Authorize(Roles ="Admin, Leader")]
-        [HttpGet("details/{id}")]
+        [HttpGet("detail/{id}")]
         public async Task<IActionResult> GetUserDetails(string id)
         {
             if (_userManager == null)
@@ -205,7 +226,6 @@ namespace Candidate.Controllers
             IList<String> roles = await _userManager.GetRolesAsync(user);
             return Ok(new
             {
-                user.Id,
                 user.FullName,
                 user.Email,
                 user.PhoneNumber,
@@ -215,6 +235,28 @@ namespace Candidate.Controllers
                 Roles= roles[0],
             });
         }
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (_userManager == null)
+                return StatusCode(500, "UserManager service is not available.");
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound("User not found.");
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok(new { message = "User deleted successfully" });
+            }
+            else
+            {
+                return StatusCode(500, result.Errors);
+            }
+        }
+
         [Authorize(Roles = "Admin, Leader")]
         [HttpPost("assign-role")]
         public async Task<IActionResult> AssignRole([FromBody] AssignRoleDTO assignRoleDTO)
@@ -265,6 +307,58 @@ namespace Candidate.Controllers
                 return StatusCode(500, "Error update");
             }
         }
+        [Authorize(Roles = "Admin, Leader")]
+        [HttpGet("roles")]
+        public async Task<ActionResult> GetRoleList()
+        {
+            var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+
+            if (roles == null || roles.Count == 0)
+                return NotFound("No roles found.");
+
+            return Ok(roles);
+
+        }
+        [Authorize(Roles = "Admin, Leader")]
+        [HttpGet("exports")]
+        public async Task<ActionResult> ExportUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Users");
+            worksheet.Cells[1, 1].Value = "FullName";
+            worksheet.Cells[1, 2].Value = "Email";
+            worksheet.Cells[1, 3].Value = "PhoneNumber";
+            worksheet.Cells[1, 4].Value = "Address";
+            worksheet.Cells[1, 5].Value = "DateOfBirth";
+            worksheet.Cells[1, 6].Value = "Status";
+            for (int i = 0; i < users.Count; i++)
+            {
+                worksheet.Cells[i + 2, 1].Value = users[i].FullName;
+                worksheet.Cells[i + 2, 2].Value = users[i].Email;
+                worksheet.Cells[i + 2, 3].Value = users[i].PhoneNumber;
+                worksheet.Cells[i + 2, 4].Value = users[i].Address;
+                if (users[i].DateOfBirth != null)
+                {
+                    worksheet.Cells[i + 2, 5].Value = users[i].DateOfBirth; // Excel tự động nhận diện DateTime
+                    worksheet.Cells[i + 2, 5].Style.Numberformat.Format = "yyyy-MM-dd"; // Định dạng ngày tháng trong Excel
+                }
+                else
+                {
+                    worksheet.Cells[i + 2, 5].Value = ""; // Hoặc giá trị mặc định nếu không có ngày sinh
+                }
+                worksheet.Cells[i + 2, 6].Value = users[i].Status ? "Activated" : "Deactivated";
+            }
+            worksheet.Cells.AutoFitColumns();
+
+            var stream = new MemoryStream();
+            package.SaveAs(stream);
+            stream.Position = 0;
+
+            var fileName = "Users.xlsx";
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
     }
-    
+
+
 }

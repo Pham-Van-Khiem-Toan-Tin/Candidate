@@ -14,7 +14,7 @@
     </div>
     <div class="middle mt-4 d-flex align-content-center justify-content-between">
       <a href="/users/create" class="btn-link btn-base btn-handle">Create user</a>
-      <button class="btn-base btn-cancel">Export</button>
+      <button class="btn-base btn-cancel" (click)="exportUsers()">Export</button>
     </div>
     <div class="bottom mt-3">
       <table class="table table-responsive table-list table-striped table-borderless">
@@ -60,7 +60,10 @@
                   <ng-icon [svg]="icons['remixLockLine']" />
                   } @else {
                   <ng-icon [svg]="icons['remixLockUnlockLine']" />}</button>
-                <button class="btn-icon text-danger" (click)="editUser(user.id)">
+                <button class="btn-icon text-danger" 
+                data-bs-toggle="modal" 
+                data-bs-target="#modalConfirm" 
+                (click)="openModalDelete(user)">
                   <ng-icon [svg]="icons['remixDeleteBin5Line']" /></button>
               </div>
               <!-- Thêm các hành động như xem chi tiết, chỉnh sửa, xóa, vv. -->
@@ -94,4 +97,5 @@
       </div>
     </div>
   </div>
+  <app-modal-confirm [modal]="modal" (confirm)="deleteUser()"></app-modal-confirm>
 </app-layout>

@@ -1,15 +1,33 @@
-import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NgIconComponent } from '@ng-icons/core';
+import { AlertService } from './services/alert/alert.service';
+import { AlertComponent } from './components/alert/alert.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, AlertComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'frontend';
+  alertMessage: string = "";
+  alertType: 'success' | 'warning' | 'error' = 'success';
+
+  constructor(private alertService: AlertService) {}
+
+  ngOnInit() {
+    this.alertService.alert$.subscribe(alert => {
+      if (alert) {
+        this.alertMessage = alert.message;
+        this.alertType = alert.type;
+      } else {
+        this.alertMessage = '';
+        this.alertType = 'success'; // Reset type or set default
+      }
+    });
+  }
+
+  
 }

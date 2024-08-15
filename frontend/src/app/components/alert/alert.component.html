@@ -1,0 +1,13 @@
+@if (visible) {
+<div class="alert" [class]="typeClass">
+  <div class="alert-header d-flex justify-content-end">
+    <button class="" (click)="close()">
+      <ng-icon [svg]="iconClose" />
+    </button>
+  </div>
+  <div class="alert-body">
+    <p>{{ message }}</p>
+  </div>
+
+</div>
+}

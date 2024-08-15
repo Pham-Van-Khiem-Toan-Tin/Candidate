@@ -1,0 +1,45 @@
+
+.alert {
+  position: fixed;
+  top: 20px; /* Vị trí trên màn hình */
+  right: 50%; /* Khoảng cách từ bên phải */
+  transform: translateX(50%);
+  width: 300px;
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease-out;
+  opacity: 1;
+  animation: slideIn 0.3s ease-out forwards;
+  &.alert-success {
+    background-color: #4caf50;
+  }
+  
+  &.alert-warning {
+    background-color: #ff9800;
+  }
+  
+  &.alert-error {
+    background-color: #f44336;
+  }
+  button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+  }
+}
+
+
+@keyframes slideIn {
+  from {
+    top: -100px; /* Bắt đầu ở vị trí ngoài màn hình */
+  }
+  to {
+    top: 20px; /* Vị trí cuối cùng trên màn hình */
+  }
+}
+
