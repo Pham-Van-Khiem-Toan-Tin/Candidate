@@ -4,19 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Candidate.Controllers
 {
-    [Route("api/chanel")]
-    public class ChanelController : Controller
+    [Route("api/channel")]
+    [ApiController]
+    public class ChannelController : Controller
     {
-        private readonly IChanelRepository _chanelRepository;
-        public ChanelController(IChanelRepository chanelRepository) 
+        private readonly IChannelRepository _channelRepository;
+        public ChannelController(IChannelRepository channelRepository) 
         {
-            _chanelRepository = chanelRepository;
+            _channelRepository = channelRepository;
         }
         [Authorize(Roles = "Admin, Leader")]
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
-            var chanels = await _chanelRepository.GetAll();
+            var chanels = await _channelRepository.GetAll();
             return Ok(chanels);
         }
     }

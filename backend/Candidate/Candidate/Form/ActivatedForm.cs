@@ -1,6 +1,6 @@
 ﻿namespace Candidate.Dtos
 {
-    public class ActivatedDTO
+    public class ActivatedForm
     {
         public bool IsActivated { get; set; }
     }

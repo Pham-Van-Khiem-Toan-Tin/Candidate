@@ -2,7 +2,7 @@
 
 namespace Candidate.Dtos
 {
-    public class EditUserDTO
+    public class EditUserForm
     {
         public string Email { get; set; }
         public string FullName { get; set; }

@@ -15,7 +15,33 @@
       padding: 0 10px 0 10px;
     }
     span {
-        color: var(--span-color-des);
+      color: var(--span-color-des);
+    }
+  }
+  td {
+    font-size: 0.8rem;
+    font-weight: 500;
+    .status {
+      padding: 6px 8px;
+      border-radius: 20px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .status-activated {
+      background-color: #dcfbeb; /* Màu nền xanh lá cho trạng thái kích hoạt */
+      color: #155724; /* Màu chữ xanh đậm */
+    }
+
+    .status-deactivated {
+      background-color: #f5d1d1; /* Màu nền đỏ cho trạng thái hủy kích hoạt */
+      color: #6e2930; /* Màu chữ đỏ đậm */
+    }
+  }
+  .btn-icon-group {
+    display: flex;
+    gap: 0.5rem;
+    .btn-icon {
+      width: auto;
     }
   }
 }

@@ -45,9 +45,9 @@
           </label>
           <ng-select labelForId="partner" formControlName="partners" [closeOnSelect]="false" [searchable]="false"
             placeholder="Enter event partners" [multiple]="true">
-            <!-- @for (chanel of channels; track chanel.id) {
-            <ng-option [value]="chanel.id">{{chanel.name}}</ng-option>
-            } -->
+            @for (partner of partners; track partner.id) {
+            <ng-option [value]="partner.id">{{partner.name}}</ng-option>
+            }
           </ng-select>
         </div>
         <div class="form-content d-flex align-items-center justify-content-between col-6">
@@ -63,7 +63,7 @@
           <label for="totalParticipants">
             Total Participants
           </label>
-          <input id="totalParticipants" formControlName="totalParticipants" type="text"
+          <input id="totalParticipants" formControlName="totalParticipants" type="number"
             placeholder="Enter total Participants">
         </div>
       </div>

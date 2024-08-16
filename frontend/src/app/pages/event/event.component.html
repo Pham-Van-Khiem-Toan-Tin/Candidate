@@ -1,42 +1,70 @@
 <app-layout fc="Event Management" mt="Event List">
   <div class="event-list">
     <div class="top">
-      <form [formGroup]="searchForm" class="formSearch">
+      <form [formGroup]="searchForm" (ngSubmit)="loadEvent()" class="formSearch">
         <app-input-search [control]="getControl('name')"></app-input-search>
         <div class="d-flex align-items-center gap-2">
-            <span class="">Event Date</span>
-            <input type="date" [formControl]="getControl('startDate')">
-            <input type="date" [formControl]="getControl('endDate')">
+          <span class="">Event Date</span>
+          <input type="date" [formControl]="getControl('startDate')">
+          <input type="date" [formControl]="getControl('endDate')">
         </div>
         <button class="btn-base btn-handle" type="submit">Search</button>
         <button class="btn-base btn-cancel" (click)="clearForm()">Clear search</button>
       </form>
     </div>
     <div class="middle mt-4 d-flex align-content-center justify-content-between">
-        <a href="/events/create" class="btn-link btn-base btn-handle">Create Event</a>
-        <button class="btn-base btn-cancel">Export</button>
-      </div>
-  </div>
-  <div class="bottom mt-3">
-    <table class="table table-responsive table-list table-striped table-borderless">
-      <thead class="table-light">
-        <tr>
-          <th scope="col">Event Name</th>
-          <th scope="col">Chanel</th>
-          <th scope="col">Event Date</th>
-          <th scope="col">Partner</th>
-          <th scope="col">Target</th>
-          <th scope="col">Total participant</th>
-          <th scope="col">Note</th>
-          <th scope="col">Status</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    <div class="paga-box d-flex justify-content-center">
-        <!-- <nav aria-label="Page navigation example">
+      <a href="/events/create" class="btn-link btn-base btn-handle">Create Event</a>
+      <button class="btn-base btn-cancel">Export</button>
+    </div>
+    <div class="bottom mt-3">
+      <table class="table table-responsive table-list table-striped table-borderless">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Event Name</th>
+            <th scope="col">Chanel</th>
+            <th scope="col">Event Date</th>
+            <th scope="col">Partner</th>
+            <th scope="col">Target</th>
+            <th scope="col">Total participant</th>
+            <th scope="col">Note</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (events.length == 0) {
+          <tr>
+            <td colspan="9" class="d-block w-100 text-center">No Event Match</td>
+          </tr>
+          }
+          @for (event of events; track event.id) {
+          <tr>
+            <td>{{ event.name }}</td>
+            <td>{{ getChanel(event.channels) }}</td>
+            <td>
+              {{ 'From: ' + convertToDate(event.startDate, "DD/MM/YYYY") + " To: " + convertToDate(event.endDate, "DD/MM/YYYY") }}
+            </td>
+            <td>{{ getPartner(event.partners) }}</td>
+            <td>{{ event.target }}</td>
+            <td>{{ event.participants }}</td>
+            <td>{{ event.note || 'N/A' }}</td>
+            <td>{{ event.status }}</td>
+            <td>
+              <div class="btn-icon-group">
+                <button class="btn-icon">
+                  <ng-icon [svg]="icons['remixInfoI']" /></button>
+                <button class="btn-icon">
+                  <ng-icon [svg]="icons['remixPencilLine']" /></button>
+                <button class="btn-icon text-danger" data-bs-toggle="modal" data-bs-target="#modalConfirm">
+                  <ng-icon [svg]="icons['remixDeleteBin5Line']" /></button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      <div class="paga-box d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
           <ul class="pagination">
             <li class="page-item" [class.disabled]="currentPage === 1">
               <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
@@ -55,7 +83,9 @@
               </a>
             </li>
           </ul>
-        </nav> -->
+        </nav>
       </div>
+    </div>
+
   </div>
 </app-layout>

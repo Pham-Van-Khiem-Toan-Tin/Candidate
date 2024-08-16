@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]);
@@ -59,7 +60,10 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IChanelRepository, ChanelRepository>();
+builder.Services.AddScoped<IChannelRepository, ChannelRepository>();
+builder.Services.AddScoped<IPartnerRepository, PartnerRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

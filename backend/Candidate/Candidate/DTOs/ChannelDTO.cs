@@ -1,6 +1,6 @@
-﻿namespace Candidate.Model
+﻿namespace Candidate.Rsps
 {
-    public class Chanel
+    public class ChannelDTO
     {
         public string Id { get; set; }
         public string Name { get; set; }

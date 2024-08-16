@@ -1,6 +1,6 @@
 ﻿namespace Candidate.Dtos
 {
-    public class ResetDTO
+    public class ResetForm
     {
         public string Email { get; set; }
     }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Candidate.Dtos
 {
-    public class RegisterDTO
+    public class RegisterForm
 
     {
         [Required]

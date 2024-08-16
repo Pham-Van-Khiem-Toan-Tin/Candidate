@@ -28,7 +28,7 @@ namespace Candidate.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpPost("create")]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO) 
+        public async Task<IActionResult> Register([FromBody] RegisterForm registerDTO) 
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Candidate.Controllers
         }
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
+        public async Task<IActionResult> Login([FromBody] LoginForm loginDTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -82,7 +82,7 @@ namespace Candidate.Controllers
         }
         [AllowAnonymous]
         [HttpPost("reset")]
-        public async Task<IActionResult> Reset([FromBody] ResetDTO resetDTO)
+        public async Task<IActionResult> Reset([FromBody] ResetForm resetDTO)
         {
             if (ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -100,7 +100,7 @@ namespace Candidate.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<ActionResult<List<object>>> AllUser(
+        public async Task<ActionResult<List<object>>> Search(
             [FromQuery] string name = null,
             [FromQuery] string status = null,
             [FromQuery] int pageNumber = 1,
@@ -163,7 +163,7 @@ namespace Candidate.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpPut("edit/{id}")]
-        public async Task<IActionResult> EditUser(string id, [FromBody] EditUserDTO editUserDTO)
+        public async Task<IActionResult> EditUser(string id, [FromBody] EditUserForm editUserDTO)
         {
             // Kiểm tra tính hợp lệ của ModelState
             if (!ModelState.IsValid)
@@ -259,7 +259,7 @@ namespace Candidate.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpPatch("activate/{id}")]
-        public async Task<IActionResult> ActivateUser(string id, [FromBody] ActivatedDTO activatedDTO)
+        public async Task<IActionResult> ActivateUser(string id, [FromBody] ActivatedForm activatedDTO)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)

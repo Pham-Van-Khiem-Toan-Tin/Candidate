@@ -14,6 +14,8 @@ import {
   NgSelectModule,
 } from '@ng-select/ng-select';
 import { ChanelService } from '../../services/chanel/chanel.service';
+import { PartnerService } from '../../services/partner/partner.service';
+import { EventService } from '../../services/event/event.service';
 
 @Component({
   selector: 'app-event-create',
@@ -24,7 +26,7 @@ import { ChanelService } from '../../services/chanel/chanel.service';
     NgSelectComponent,
     NgOptionTemplateDirective,
     NgLabelTemplateDirective,
-    NgSelectModule
+    NgSelectModule,
   ],
   templateUrl: './event-create.component.html',
   styleUrl: './event-create.component.scss',
@@ -32,36 +34,44 @@ import { ChanelService } from '../../services/chanel/chanel.service';
 export class EventCreateComponent implements OnInit {
   eventForm: FormGroup;
   disabled: boolean = false;
-  channels: any = []
+  channels: any = [];
+  partners: any = [];
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private chanelService: ChanelService
+    private chanelService: ChanelService,
+    private partnerService: PartnerService,
+    private eventService: EventService
   ) {
     this.eventForm = this.fb.group({
       eventId: [
         '',
-        [Validators.required, Validators.pattern('^[a-z]+-[a-z]+-d{4}$')],
+        [Validators.required, Validators.pattern('^[a-z]+-[a-z]+-\\d{4}$')],
       ],
       eventName: ['', [Validators.required]],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
-      target: ['', [Validators.required]],
+      target: [''],
       chanel: [[], [Validators.required]],
-      partners: [[], [Validators.required]],
-      totalParticipants: ['', Validators.required, Validators.min(0)],
+      partners: [[]],
+      totalParticipants: ['', [Validators.min(0)]],
       note: [''],
     });
   }
   ngOnInit(): void {
-    this.getAllChanel();
+    this.disabled = true;
+    Promise.all([this.getAllChanel(), this.getAllPartner()])
+      .then(([chanelData, partnerData]) => {
+        this.disabled = false;
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }
-  getAllChanel(): void {
-    this.chanelService.getAllChanel().subscribe({
+  getAllPartner(): void {
+    this.partnerService.getAllPartner().subscribe({
       next: (data) => {
-        console.log(data);
-        this.channels = data;
-        
+        this.partners = data;
       },
       error: (err) => {
         console.log(err);
@@ -69,12 +79,40 @@ export class EventCreateComponent implements OnInit {
       complete: () => {
         console.log('Login request complete');
       },
-    })
+    });
+  }
+  getAllChanel(): void {
+    this.chanelService.getAllChanel().subscribe({
+      next: (data) => {
+        this.channels = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Login request complete');
+      },
+    });
   }
   createEvent(): void {
-    let valueDiv = document.querySelector(".editable-div");
-    console.log(valueDiv?.textContent);
-    
-    
+    console.log(this.eventForm.valid);
+    console.log('Event ID Errors:', this.eventForm.get('eventId')?.errors);
+    console.log('Chanel Errors:', this.eventForm.get('chanel')?.errors);
+    console.log('Partners Errors:', this.eventForm.get('partners')?.errors);
+    if (this.eventForm.valid) {
+      this.eventService.createEvent(this.eventForm).subscribe({
+        next: (data) => {
+          this.disabled = true;
+          setTimeout(() => this.router.navigate(['/events']), 1000);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('Login request complete');
+        },
+      });
+      
+    }
   }
 }
