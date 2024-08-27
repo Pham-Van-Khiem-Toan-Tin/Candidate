@@ -50,7 +50,7 @@ export class CandidateCreateComponent implements OnInit {
     "Node.js", "Express.js", "Java", "Spring Boot", "Python",
     "Django", "Ruby on Rails", "TypeScript", "Angular", "React.js",
     "Vue.js", "PHP", "Laravel", "SQL", "MongoDB"
-  ].sort();
+  ].sort((a, b) => a.localeCompare(b));
   years: any = [
     "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001",
     "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009",
@@ -64,14 +64,14 @@ export class CandidateCreateComponent implements OnInit {
     "Arabic", "French", "Bengali", "Russian", "Portuguese",
     "Indonesian", "Urdu", "German", "Japanese", "Swahili", "Marathi",
     "Vietnamese"
-  ].sort();
+  ].sort((a, b) => a.localeCompare(b));
   itMajors = [
     "Computer Science", "Software Engineering",
     "Information Technology", "Computer Engineering",
     "Data Science", "Network Engineering", "Business Administration",
     "User Interface Design", "Telecommunications Engineering",
     "Information Security Engineering", "Database Engineering", "Information Systems"
-  ].sort();
+  ].sort((a, b) => a.localeCompare(b));
   constructor(private fb: FormBuilder,
     private eventService : EventService,
     private partnerService: PartnerService) {
