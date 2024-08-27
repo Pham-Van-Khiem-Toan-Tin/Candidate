@@ -1,5 +1,5 @@
 ﻿
-namespace Candidate.Rsps
+namespace Candidate.DTOs
 {
     public class EventDTO
     {
@@ -13,5 +13,6 @@ namespace Candidate.Rsps
         public string Note { get; set; }
         public List<PartnerDTO> Partners { get; set; }
         public List<ChannelDTO> Channels { get; set; }
+        public List<PositionDTO> Positions { get; set; }
     }
 }

@@ -1,0 +1,13 @@
+.candidate-create {
+    background-color: var(--content-color);
+    padding: 2rem 1rem;
+    .form-multiple-input {
+        .form-content {
+            textarea {
+                width: 250px;
+                min-height: 100px;
+            }
+        }
+        
+    }
+}

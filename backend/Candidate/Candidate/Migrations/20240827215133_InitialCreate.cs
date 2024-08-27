@@ -33,7 +33,6 @@ namespace Candidate.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
@@ -45,6 +44,7 @@ namespace Candidate.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -80,6 +80,7 @@ namespace Candidate.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Target = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Participants = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -98,6 +99,21 @@ namespace Candidate.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Partners", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Positions",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Positions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,6 +247,40 @@ namespace Candidate.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CandidateInfos",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UniversityId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Skills = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Major = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Graduation = table.Column<int>(type: "int", nullable: false),
+                    LinkCV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GPA = table.Column<float>(type: "real", nullable: false),
+                    ApplyDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WorkingTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CandidateInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CandidateInfos_Partners_UniversityId",
+                        column: x => x.UniversityId,
+                        principalTable: "Partners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EventPartners",
                 columns: table => new
                 {
@@ -254,15 +304,112 @@ namespace Candidate.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EventPositions",
+                columns: table => new
+                {
+                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PositionId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventPositions", x => new { x.EventId, x.PositionId });
+                    table.ForeignKey(
+                        name: "FK_EventPositions_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventPositions_Positions_PositionId",
+                        column: x => x.PositionId,
+                        principalTable: "Positions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Applications",
+                columns: table => new
+                {
+                    CandidateId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ChannelId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Applications", x => new { x.CandidateId, x.EventId, x.ChannelId });
+                    table.ForeignKey(
+                        name: "FK_Applications_CandidateInfos_CandidateId",
+                        column: x => x.CandidateId,
+                        principalTable: "CandidateInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Applications_Channels_ChannelId",
+                        column: x => x.ChannelId,
+                        principalTable: "Channels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Applications_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CandidatesPositions",
+                columns: table => new
+                {
+                    CandidateInfoId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PositionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ApplicationCandidateId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicationChannelId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicationEventId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CandidatesPositions", x => new { x.CandidateInfoId, x.PositionId });
+                    table.ForeignKey(
+                        name: "FK_CandidatesPositions_Applications_ApplicationCandidateId_ApplicationEventId_ApplicationChannelId",
+                        columns: x => new { x.ApplicationCandidateId, x.ApplicationEventId, x.ApplicationChannelId },
+                        principalTable: "Applications",
+                        principalColumns: new[] { "CandidateId", "EventId", "ChannelId" });
+                    table.ForeignKey(
+                        name: "FK_CandidatesPositions_CandidateInfos_CandidateInfoId",
+                        column: x => x.CandidateInfoId,
+                        principalTable: "CandidateInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CandidatesPositions_Positions_PositionId",
+                        column: x => x.PositionId,
+                        principalTable: "Positions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "5bb8f6ef-3167-4b3b-926b-0f4719e12693", null, "Admin", "ADMIN" },
-                    { "db122442-230f-4170-b573-a96f97138843", null, "User", "USER" },
-                    { "f60897ad-0368-4859-a2b0-09c8ac79a797", null, "Leader", "LEADER" }
+                    { "89248af2-9b28-41f8-9423-6962f5f2fd3a", null, "Leader", "LEADER" },
+                    { "bdb82610-2e80-4fcb-a1b8-6fc73975fee7", null, "Admin", "ADMIN" },
+                    { "c2e61f75-6322-454d-962a-507d0e92530e", null, "User", "USER" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applications_ChannelId",
+                table: "Applications",
+                column: "ChannelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applications_EventId",
+                table: "Applications",
+                column: "EventId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -304,6 +451,21 @@ namespace Candidate.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CandidateInfos_UniversityId",
+                table: "CandidateInfos",
+                column: "UniversityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CandidatesPositions_ApplicationCandidateId_ApplicationEventId_ApplicationChannelId",
+                table: "CandidatesPositions",
+                columns: new[] { "ApplicationCandidateId", "ApplicationEventId", "ApplicationChannelId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CandidatesPositions_PositionId",
+                table: "CandidatesPositions",
+                column: "PositionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EventChannels_ChannelId",
                 table: "EventChannels",
                 column: "ChannelId");
@@ -312,6 +474,11 @@ namespace Candidate.Migrations
                 name: "IX_EventPartners_PartnerId",
                 table: "EventPartners",
                 column: "PartnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventPositions_PositionId",
+                table: "EventPositions",
+                column: "PositionId");
         }
 
         /// <inheritdoc />
@@ -333,16 +500,31 @@ namespace Candidate.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CandidatesPositions");
+
+            migrationBuilder.DropTable(
                 name: "EventChannels");
 
             migrationBuilder.DropTable(
                 name: "EventPartners");
 
             migrationBuilder.DropTable(
+                name: "EventPositions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Applications");
+
+            migrationBuilder.DropTable(
+                name: "Positions");
+
+            migrationBuilder.DropTable(
+                name: "CandidateInfos");
 
             migrationBuilder.DropTable(
                 name: "Channels");

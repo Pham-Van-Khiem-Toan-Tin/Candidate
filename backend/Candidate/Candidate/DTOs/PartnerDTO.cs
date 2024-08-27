@@ -1,4 +1,4 @@
-﻿namespace Candidate.Rsps
+﻿namespace Candidate.DTOs
 {
     public class PartnerDTO
     {

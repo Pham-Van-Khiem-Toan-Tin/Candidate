@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
-using System.Linq;
 
 namespace Candidate.Controllers
 {
@@ -18,13 +17,15 @@ namespace Candidate.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public UserController(UserManager<User> userManager,RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager, ITokenService tokenService)
+        private readonly RoleManager<Role> _roleManager;
+        private readonly IUserRepository _userRepository;
+        public UserController(UserManager<User> userManager,RoleManager<Role> roleManager, IUserRepository userRepository,  SignInManager<User> signInManager, ITokenService tokenService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _userRepository = userRepository;
         }
         [Authorize(Roles = "Admin")]
         [HttpPost("create")]
@@ -100,63 +101,13 @@ namespace Candidate.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<ActionResult<List<object>>> Search(
+        public async Task<ActionResult> Search(
             [FromQuery] string name = null,
             [FromQuery] string status = null,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            const int maxPageSize = 100;
-            pageSize = (pageSize > maxPageSize) ? maxPageSize : pageSize;
-
-            IQueryable<User> query = _userManager.Users;
-
-            if (!String.IsNullOrWhiteSpace(name))
-            {
-                query = query.Where(u => u.FullName.Contains(name));
-            }
-            if (!String.IsNullOrWhiteSpace(status))
-            {
-                bool isActive = status.Equals("Activated", StringComparison.OrdinalIgnoreCase);
-                query = query.Where(u => u.Status == isActive);
-            }
-
-            var totalItems = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-            var users = await query
-                .OrderBy(u => u.FullName)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            var usersWithRoles = new List<object>();
-
-            foreach (var user in users)
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-                usersWithRoles.Add(new
-                {
-                    user.Id,
-                    user.FullName,
-                    user.Email,
-                    user.PhoneNumber,
-                    user.Status,
-                    user.Address,
-                    user.DateOfBirth,
-                    Roles = roles
-                });
-            }
-
-            var result = new PagedResult<object>
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalItems = totalItems,
-                TotalPages = totalPages,
-                Items = usersWithRoles
-            };
-
+            var result = await _userRepository.Search(pageNumber, pageSize, status, name);
             return Ok(result);
 
         }
@@ -294,31 +245,33 @@ namespace Candidate.Controllers
         [HttpGet("exports")]
         public async Task<ActionResult> ExportUsers()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userRepository.GetAllUsers();
             using var package = new ExcelPackage();
             var worksheet = package.Workbook.Worksheets.Add("Users");
             worksheet.Cells[1, 1].Value = "FullName";
             worksheet.Cells[1, 2].Value = "Email";
             worksheet.Cells[1, 3].Value = "PhoneNumber";
             worksheet.Cells[1, 4].Value = "Address";
-            worksheet.Cells[1, 5].Value = "DateOfBirth";
-            worksheet.Cells[1, 6].Value = "Status";
+            worksheet.Cells[1, 5].Value = "Role";
+            worksheet.Cells[1, 6].Value = "DateOfBirth";
+            worksheet.Cells[1, 7].Value = "Status";
             for (int i = 0; i < users.Count; i++)
             {
                 worksheet.Cells[i + 2, 1].Value = users[i].FullName;
                 worksheet.Cells[i + 2, 2].Value = users[i].Email;
                 worksheet.Cells[i + 2, 3].Value = users[i].PhoneNumber;
                 worksheet.Cells[i + 2, 4].Value = users[i].Address;
+                worksheet.Cells[i + 2, 5].Value = users[i].Roles;
                 if (users[i].DateOfBirth != null)
                 {
-                    worksheet.Cells[i + 2, 5].Value = users[i].DateOfBirth; // Excel tự động nhận diện DateTime
-                    worksheet.Cells[i + 2, 5].Style.Numberformat.Format = "yyyy-MM-dd"; // Định dạng ngày tháng trong Excel
+                    worksheet.Cells[i + 2, 6].Value = users[i].DateOfBirth; // Excel tự động nhận diện DateTime
+                    worksheet.Cells[i + 2, 6].Style.Numberformat.Format = "yyyy-MM-dd"; // Định dạng ngày tháng trong Excel
                 }
                 else
                 {
-                    worksheet.Cells[i + 2, 5].Value = ""; // Hoặc giá trị mặc định nếu không có ngày sinh
+                    worksheet.Cells[i + 2, 6].Value = ""; // Hoặc giá trị mặc định nếu không có ngày sinh
                 }
-                worksheet.Cells[i + 2, 6].Value = users[i].Status ? "Activated" : "Deactivated";
+                worksheet.Cells[i + 2, 7].Value = users[i].Status ? "Activated" : "Deactivated";
             }
             worksheet.Cells.AutoFitColumns();
 

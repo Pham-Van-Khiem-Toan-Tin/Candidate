@@ -11,6 +11,8 @@ namespace Candidate.Model
         public DateTime EndDate { get; set; }
         public ICollection<EventPartners> EventPartners { get; set; }
         public ICollection<EventChannels> EventChannels { get; set; }
+        public ICollection<EventPositions> EventPositions { get; set; }
+        public ICollection<Application> Applications { get; set; }
         public string Target { get; set; }
         public int Participants { get; set; }
         public string Status { get; set; }

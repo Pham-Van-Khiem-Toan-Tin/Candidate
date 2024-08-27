@@ -1,0 +1,108 @@
+<app-layout fc="Event Management" mt="Event Detail">
+  <div class="event-detail">
+    <div class="form-multiple-input">
+      <p class="form-title">I. Event Summary</p>
+      <div class="row">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="name">
+            Event name
+          </label>
+          <span class="description">
+            {{ eventDetail.name }}
+          </span>
+        </div>
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="chanel">
+            Chanel
+          </label>
+          <span class="description">
+            {{ eventDetail.chanel }}
+          </span>
+        </div>
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="startDate">
+            Start Date
+          </label>
+          <span class="description">
+            {{eventDetail.startDate}}
+          </span>
+        </div>
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="endDate">
+            End Date
+          </label>
+          <span class="description">
+            {{eventDetail.endDate}}
+          </span>
+        </div>
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="partners">
+            Partners
+          </label>
+          <span class="description">
+            {{eventDetail.partners}}
+          </span>
+        </div>
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="targets">
+            Targets
+          </label>
+          <span class="description">
+            {{eventDetail.targets || 'N/A'}}
+          </span>
+        </div>
+
+      </div>
+      <p class="form-title">II. Event Results</p>
+      <div class="row">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="participants">
+            Total Participants
+          </label>
+          <span class="description">
+            {{eventDetail.participants}}
+          </span>
+        </div>
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="note">
+            Note
+          </label>
+          <span class="description">
+            {{eventDetail.note || 'N/A'}}
+          </span>
+        </div>
+      </div>
+      <p class="form-title">List of candidate</p>
+      <div class="row">
+        <div class="col-8">
+          <table class="table table-responsive table-striped table-borderless">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">File Name</th>
+                <th scope="col">Chanel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2" class="text-center text-danger td-warning">List of candidate will be automatically
+                  update by the system from Candidate module</td>
+              </tr>
+              <tr>
+                <td class="td-blank" colspan="2"></td>
+              </tr>
+              <tr>
+                <td class="td-blank" colspan="2"></td>
+              </tr>
+              <tr>
+                <td class="td-blank" colspan="2"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-5">
+        <a href="/events" class="btn-link ms-auto text-center btn-base btn-cancel">Return</a>
+      </div>
+    </div>
+  </div>
+</app-layout>

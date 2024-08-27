@@ -1,0 +1,45 @@
+<app-layout fc="Candidate Management" mt="Candidate List">
+  <div class="candidate-list">
+    <div class="top">
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="formSearch">
+        <app-input-search placeholder="Search by full name" [control]="getControl('name')"></app-input-search>
+        <app-input-search placeholder="Search by event name" [control]="getControl('eventName')"></app-input-search>
+        <select defaultValue="" [formControl]="getControl('status')">
+          <option value="">Select event channels</option>
+          <option value="Deactivated">Deactivated</option>
+          <option value="Activated">Activated</option>
+        </select>
+        <button class="btn-base btn-handle" type="submit">Search</button>
+        <button class="btn-base btn-cancel" (click)="clearForm()">Clear search</button>
+      </form>
+    </div>
+  </div>
+  <div class="middle mt-4 d-flex align-content-center justify-content-between">
+    <a href="/candidates/create" class="btn-link btn-base btn-handle">Create candidate</a>
+    <button class="btn-base btn-cancel px-4">Export</button>
+  </div>
+  <div class="bottom mt-3">
+    <table class="table table-responsive table-list table-striped table-borderless">
+      <thead class="table-light">
+        <tr>
+          <th scope="col"><input class="me-1" type="checkbox" name="" id="select-all"> <label class="fs-6" for="select-all">select all</label></th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Phone No.</th>
+          <th scope="col">Email</th>
+          <th scope="col">University</th>
+          <th scope="col">Major</th>
+          <th scope="col">Skills</th>
+          <th scope="col">Apply Job</th>
+          <th scope="col">Event</th>
+          <th scope="col">Chanel</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</app-layout>

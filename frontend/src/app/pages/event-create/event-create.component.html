@@ -3,32 +3,26 @@
     <form class="form-multiple-input" [formGroup]="eventForm" (ngSubmit)="createEvent()">
       <p class="form-title">I. Event Summary</p>
       <div class="row mb-5">
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="event-id">
-            Event id<span class="text-danger">*</span>
-          </label>
-          <input id="event-id" formControlName="eventId" type="text" placeholder="example-event-2024">
-        </div>
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="event-name">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="event-name">
             Event name<span class="text-danger">*</span>
           </label>
           <input id="event-name" formControlName="eventName" type="text" placeholder="Enter event name">
         </div>
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="startDate">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="startDate">
             Start Date<span class="text-danger">*</span>
           </label>
           <input id="startDate" formControlName="startDate" value="" type="date">
         </div>
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="endDate">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="endDate">
             End Date<span class="text-danger">*</span>
           </label>
           <input id="endDate" formControlName="endDate" value="" type="date">
         </div>
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="chanel">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="chanel">
             Chanel<span class="text-danger">*</span>
           </label>
           <ng-select labelForId="chanel" formControlName="chanel" [closeOnSelect]="false" [searchable]="false"
@@ -39,8 +33,8 @@
           </ng-select>
         </div>
 
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="partner">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="partner">
             Partners
           </label>
           <ng-select labelForId="partner" formControlName="partners" [closeOnSelect]="false" [searchable]="false"
@@ -50,8 +44,19 @@
             }
           </ng-select>
         </div>
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="target">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="positions">
+            Positions
+          </label>
+          <ng-select labelForId="positions" formControlName="positions" [closeOnSelect]="false" [searchable]="false"
+            placeholder="Enter event postitons" [multiple]="true">
+            @for (position of positions; track position.id) {
+            <ng-option [value]="position.id">{{position.name}}</ng-option>
+            }
+          </ng-select>
+        </div>
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="target">
             Target<span class="text-danger">*</span>
           </label>
           <input id="target" formControlName="target" type="text" placeholder="Enter event target">
@@ -59,8 +64,8 @@
       </div>
       <p class="form-title">II. Event Results</p>
       <div class="row">
-        <div class="form-content d-flex align-items-center justify-content-between col-6">
-          <label for="totalParticipants">
+        <div class="form-content row d-flex align-items-center col-6">
+          <label class="col-6" for="totalParticipants">
             Total Participants
           </label>
           <input id="totalParticipants" formControlName="totalParticipants" type="number"
@@ -68,11 +73,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-content d-flex justify-content-between col-7">
-          <label for="note">
+        <div class="form-content row d-flex col-6">
+          <label class="col-6" for="note">
             Note
           </label>
-          <textarea id="note" formControlName="eventId" type="text" placeholder="Enter event notes"></textarea>
+          <div class="col-6 p-0">
+            <textarea id="note" formControlName="note" type="text" placeholder="Enter event notes"></textarea>
+          </div>
         </div>
       </div>
       <p class="form-title">List of candidate</p>

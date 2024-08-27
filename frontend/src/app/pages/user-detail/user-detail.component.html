@@ -3,56 +3,56 @@
         <div class="form-multiple-input">
             <p class="form-title">I. User Information</p>
             <div class="row">
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="name">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="name">
                         Full name
                     </label>
                     <span class="description">
                         {{user.fullName}}
                     </span>
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="email">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="email">
                         Email
                     </label>
                     <span class="description text-primary text-decoration-underline">
                         {{user.email}}
                     </span>
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="DOB">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="DOB">
                         D.O.B
                     </label>
                     <span class="description">
                         {{user.dob}}
                     </span>
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="address">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="address">
                         Address
                     </label>
                     <span class="description">
                         {{user.address}}
                     </span>
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="phoneNo">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="phoneNo">
                         Phone number
                     </label>
                     <span class="description">
                         {{user.phoneNo}}
                     </span>
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="role">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="role">
                         Role
                     </label>
                     <span class="description">
                         {{user.role}}
                     </span>
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="status">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="status">
                         Status
                     </label>
                     <span class="description" [class]="user.status ? 'text-success': 'text-danger'">

@@ -14,7 +14,7 @@
     </div>
     <div class="middle mt-4 d-flex align-content-center justify-content-between">
       <a href="/events/create" class="btn-link btn-base btn-handle">Create Event</a>
-      <button class="btn-base btn-cancel">Export</button>
+      <button class="btn-base btn-cancel" (click)="exportEvent()">Export</button>
     </div>
     <div class="bottom mt-3">
       <table class="table table-responsive table-list table-striped table-borderless">
@@ -51,11 +51,11 @@
             <td>{{ event.status }}</td>
             <td>
               <div class="btn-icon-group">
-                <button class="btn-icon">
+                <button class="btn-icon" (click)="viewEvent(event.id)">
                   <ng-icon [svg]="icons['remixInfoI']" /></button>
                 <button class="btn-icon">
                   <ng-icon [svg]="icons['remixPencilLine']" /></button>
-                <button class="btn-icon text-danger" data-bs-toggle="modal" data-bs-target="#modalConfirm">
+                <button (click)="openModalDelete(event)" class="btn-icon text-danger" data-bs-toggle="modal" data-bs-target="#modalConfirm">
                   <ng-icon [svg]="icons['remixDeleteBin5Line']" /></button>
               </div>
             </td>
@@ -88,4 +88,5 @@
     </div>
 
   </div>
+  <app-modal-confirm [modal]="modal" (confirm)="deleteEvent()"></app-modal-confirm>
 </app-layout>

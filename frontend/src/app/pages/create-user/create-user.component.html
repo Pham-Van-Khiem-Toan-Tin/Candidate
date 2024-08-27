@@ -3,38 +3,38 @@
         <form class="form-multiple-input" [formGroup]="userForm" (ngSubmit)="createUser()">
             <p class="form-title">I. User Information</p>
             <div class="row">
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="user-name">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="user-name">
                         User name <span class="text-danger">*</span>
                     </label>
                     <input id="user-name" formControlName="userName" type="text" placeholder="example-cdd">
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="name">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="name">
                         Full name <span class="text-danger">*</span>
                     </label>
                     <input id="name" formControlName="fullName" type="text" placeholder="Enter full name">
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="email">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="email">
                         Email <span class="text-danger">*</span>
                     </label>
                     <input id="email" formControlName="email" type="email" placeholder="Enter email">
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="DOB">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="DOB">
                         D.O.B <span class="text-danger">*</span>
                     </label>
                     <input id="DOB" formControlName="DOB"  value="" type="date">
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="address">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="address">
                         Address <span class="text-danger">*</span>
                     </label>
                     <input id="address" formControlName="address"  type="text" placeholder="Enter address">
                 </div>
-                <div class="form-content d-flex align-items-center justify-content-between col-6">
-                    <label for="phoneNo">
+                <div class="form-content row d-flex align-items-center col-6">
+                    <label class="col-6" for="phoneNo">
                         Phone number <span class="text-danger">*</span>
                     </label>
                     <input id="phoneNo" formControlName="phoneNo"  type="tel" placeholder="Enter phone number">

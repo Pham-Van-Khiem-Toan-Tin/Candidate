@@ -16,6 +16,7 @@ import {
 import { ChanelService } from '../../services/chanel/chanel.service';
 import { PartnerService } from '../../services/partner/partner.service';
 import { EventService } from '../../services/event/event.service';
+import { PositionService } from '../../services/position/position.service';
 
 @Component({
   selector: 'app-event-create',
@@ -33,40 +34,52 @@ import { EventService } from '../../services/event/event.service';
 })
 export class EventCreateComponent implements OnInit {
   eventForm: FormGroup;
-  disabled: boolean = false;
+  disabled: boolean = true;
   channels: any = [];
   partners: any = [];
+  positions: any = [];
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private chanelService: ChanelService,
     private partnerService: PartnerService,
-    private eventService: EventService
+    private eventService: EventService,
+    private positionService: PositionService
   ) {
     this.eventForm = this.fb.group({
-      eventId: [
-        '',
-        [Validators.required, Validators.pattern('^[a-z]+-[a-z]+-\\d{4}$')],
-      ],
       eventName: ['', [Validators.required]],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
       target: [''],
       chanel: [[], [Validators.required]],
       partners: [[]],
+      positions: [[], [Validators.required]],
       totalParticipants: ['', [Validators.min(0)]],
       note: [''],
     });
   }
   ngOnInit(): void {
     this.disabled = true;
-    Promise.all([this.getAllChanel(), this.getAllPartner()])
-      .then(([chanelData, partnerData]) => {
+    Promise.all([this.getAllChanel(), this.getAllPartner(), this.getAllPosition()])
+      .then(([chanelData, partnerData, positionData]) => {
         this.disabled = false;
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+  }
+  getAllPosition(): void {
+    this.positionService.getAllPostion().subscribe({
+      next: (data) => {
+        this.positions = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Login request complete');
+      },
+    })
   }
   getAllPartner(): void {
     this.partnerService.getAllPartner().subscribe({

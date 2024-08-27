@@ -4,7 +4,7 @@
   <form class="middle" [formGroup]="loginForm" (ngSubmit)="login()">
     <app-box-input id="email" name="email" [control]="getControl('email')" label="Email address" type="email" [required]="true" placeholder="example@hotmail.com">
       <ng-icon [svg]="icons['remixMailLine']" />
-    </app-box-input> remixLockLine
+    </app-box-input>
     <app-box-input id="password" name="password" [control]="getControl('password')" label="Password" type="password" [required]="true">
       <ng-icon [svg]="icons['remixLockLine']" />
     </app-box-input>

@@ -21,7 +21,7 @@
     "@ng-icons/core": "^29.3.0",
     "@ng-icons/remixicon": "^29.3.0",
     "@ng-select/ng-select": "^13.7.0",
-    "axios": "^1.7.3",
+    "axios": "^1.7.5",
     "bootstrap": "^5.3.3",
     "file-saver": "^2.0.5",
     "frontend": "file:",

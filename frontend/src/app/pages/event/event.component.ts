@@ -16,6 +16,9 @@ import { Router } from '@angular/router';
 import { AlertService } from '../../services/alert/alert.service';
 import { EventService } from '../../services/event/event.service';
 import moment from 'moment';
+import { catchError, throwError } from 'rxjs';
+import { ModalConfirmComponent } from '../../components/modal-confirm/modal-confirm.component';
+import Modal from '../../models/Modal';
 @Component({
   selector: 'app-event',
   standalone: true,
@@ -24,6 +27,7 @@ import moment from 'moment';
     NgIconComponent,
     ReactiveFormsModule,
     InputSearchComponent,
+    ModalConfirmComponent
   ],
   templateUrl: './event.component.html',
   styleUrl: './event.component.scss',
@@ -44,6 +48,7 @@ export class EventComponent implements OnInit {
   currentPage: number = 1;
   pageSize: number = 10;
   pagesArray: number[] = [];
+  modal: Modal = new Modal();
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -83,13 +88,66 @@ export class EventComponent implements OnInit {
     return moment(date).format(pattern);
   }
   getChanel(channels: any): string {
-    return channels.map((c: any) => c.name).join(",");
+    return channels.map((c: any) => c.name).join(", ");
   }
   getPartner(partners: any): string {
-    return partners.map((p: any) => p.id).join(",") || 'N/A';
+    return partners.map((p: any) => p.id).join(", ") || 'N/A';
   }
   getControl(name: string) {
     return this.searchForm.get(name) as FormControl;
+  }
+  viewEvent(id: string): void {
+    this.router.navigate([`events/view/${id}`])
+  }
+  exportEvent(): void {
+    this.eventService.exportUsers().pipe(
+      catchError(error => {
+        console.error('Error exporting users', error);
+        return throwError(() => error);
+      })
+    )
+    .subscribe(response => {
+      if (response instanceof Blob) {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Events.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove(); // Xóa thẻ a khỏi DOM
+      } else {
+        console.error('Unexpected response type');
+      }
+    });
+  }
+  openModalDelete(event: any): void {
+
+    this.modal = {
+      title: 'Are you want to delete?',
+      content: `Are you sure you want to delete ${event.name} ?`,
+      description: "All event's data will be lost.",
+      data: event,
+    };
+  }
+  deleteEvent(): void {
+    if (this.modal?.data?.id != null) {
+      this.eventService.deleteEvent(this.modal.data.id).subscribe({
+        next: (data) => {
+          this.alertService.showAlert(data.message, 'success');
+          setTimeout(() => {
+            this.alertService.clearAlert();
+            this.loadEvent();
+          }, 1000);
+        },
+        error: (err) => {
+          this.alertService.showAlert(err, 'error');
+        },
+        complete: () => {
+          // console.log('Login request complete');
+        },
+      })
+    }
   }
   clearForm(): void {
     this.searchForm.patchValue({

@@ -1,0 +1,195 @@
+<app-layout fc="Candidate Management" mt="Create Candidate">
+    <div class="candidate-create">
+        <form class="form-multiple-input" [formGroup]="candidateForm">
+            <p class="form-title">I. Personal Information</p>
+            <div class="row">
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="id-card">
+                        ID card <span class="text-danger">*</span>
+                    </label>
+                    <input id="id-card" (input)="onInputNumber($event)" formControlName="idCard" type="text" placeholder="Enter ID card">
+                </div>
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="name">
+                        Full name <span class="text-danger">*</span>
+                    </label>
+                    <input id="name" formControlName="fullName" type="text" placeholder="Enter full name">
+                </div>
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="email">
+                        Email <span class="text-danger">*</span>
+                    </label>
+                    <input id="email" formControlName="email" type="email" placeholder="Enter email">
+                </div>
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="DOB">
+                        D.O.B <span class="text-danger">*</span>
+                    </label>
+                    <input id="DOB" formControlName="DOB"  value="" type="date">
+                </div>
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="address">
+                        Address <span class="text-danger">*</span>
+                    </label>
+                    <input id="address" formControlName="address"  type="text" placeholder="Enter address">
+                </div>
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="phoneNo">
+                        Phone number <span class="text-danger">*</span>
+                    </label>
+                    <input id="phoneNo" (input)="onInputNumber($event)" formControlName="phoneNo"  type="tel" placeholder="Enter phone number">
+                </div>
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="gender">
+                        Gender <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="gender" formControlName="gender" [searchable]="false" placeholder="Enter a gender" [clearable]="false">
+                        @for (item of genders; track $index) {
+                            <ng-option [value]="item">{{item}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+            </div>
+            <p class="form-title">I. Professional Information</p>
+            <div class="row">
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="university">
+                        University <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="university" formControlName="university" [searchable]="false" placeholder="Enter a university" [clearable]="false">
+                        @for (item of universities; track $index) {
+                            <ng-option [value]="item.id">{{item.name}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center col-6">
+                    <label class="col-6" for="skill">
+                        Skill <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="skill" formControlName="skill" [searchable]="false" placeholder="Enter skill" [clearable]="false" [multiple]="true">
+                        @for (item of skills; track $index) {
+                            <ng-option [value]="item">{{item}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="major">
+                        Major <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="major" formControlName="major" [searchable]="false" placeholder="Select a major" [clearable]="false">
+                        @for (item of itMajors; track $index) {
+                            <ng-option [value]="item">{{item}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="language">
+                        Language
+                    </label>
+                    <ng-select labelForId="language" formControlName="language" [searchable]="false" placeholder="Select languages" [clearable]="false" [multiple]="true">
+                        @for (item of popularLanguages; track $index) {
+                            <ng-option [value]="item">{{item}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="graduationYear">
+                        Graduation year <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="graduationYear" formControlName="graduationYear" [searchable]="false" placeholder="Select a year" [clearable]="false" [multiple]="true">
+                        @for (item of years; track $index) {
+                            <ng-option [value]="item">{{item}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="linkCV">
+                        Link CV 
+                    </label>
+                    <label for="linkCV" class="input-file">
+                        <span class="input-file-name">{{fileName}}</span>
+                        <div class="icon-file d-flex align-items-center">
+                            <ng-icon [svg]="icons['remixAttachmentLine']" />
+                        </div>
+                    </label>
+                    <input id="linkCV" (change)="onFileChange($event)" accept=".pdf" formControlName="linkCV" type="file">
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="GPA">
+                        GPA <span class="text-danger">*</span>
+                    </label>
+                    <input id="GPA" (input)="onInputNumberFloat($event)" formControlName="GPA" type="text" placeholder="Enter GPA">
+                </div>
+            </div>
+            <p class="form-title">I. Recruitment info</p>
+            <div class="row">
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="jobs">
+                        Apply job <span class="text-danger">*</span>
+                    </label>
+                    <ng-select [readonly]="disableChannelAndPosition" labelForId="jobs" formControlName="jobs" [searchable]="false" placeholder="Select jobs" [clearable]="false" [multiple]="true">
+                        @for (item of positions; track $index) {
+                            <ng-option [value]="item.id">{{item.name}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="event">
+                        Event <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="event" formControlName="event" [searchable]="false" placeholder="Select an event" [clearable]="false">
+                        @for (item of events; track $index) {
+                            <ng-option [value]="item.id">{{item.name}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="applyDate">
+                        Application date <span class="text-danger">*</span>
+                    </label>
+                    <input id="applyDate" formControlName="applyDate"  value="" type="date">
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="channel">
+                        Channel <span class="text-danger">*</span>
+                    </label>
+                    <ng-select [readonly]="disableChannelAndPosition" labelForId="channel" formControlName="channel" [searchable]="false" placeholder="Select a channel" [clearable]="false">
+                        @for (item of channels; track $index) {
+                            <ng-option [value]="item.id">{{item.name}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="workingTime">
+                        Working time <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="workingTime" formControlName="workingTime" [searchable]="false" placeholder="Select a working time" [clearable]="false">
+                        @for (item of workingTimes; track $index) {
+                            <ng-option [value]="item">{{item}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row align-items-center  col-6">
+                    <label class="col-6" for="status">
+                        Status <span class="text-danger">*</span>
+                    </label>
+                    <ng-select labelForId="status" formControlName="status" [searchable]="false" placeholder="Select a status" [clearable]="false">
+                        @for (item of status; track $index) {
+                            <ng-option [value]="item">{{item}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="form-content row form-textarea col-6">
+                    <label class="col-6" for="note">
+                        Note
+                    </label>
+                    <textarea placeholder="Enter note" formControlName="note" id="note"></textarea>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-5">
+                <a href="/candidates" class="btn-link text-center btn-base btn-cancel">Cancel</a>
+                <button [disabled]="disabled" type="submit" class="btn-base btn-handle">Save Candidate</button>
+            </div>
+        </form>
+    </div>
+</app-layout>

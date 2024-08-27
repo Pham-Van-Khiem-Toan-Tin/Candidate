@@ -1,6 +1,6 @@
 ﻿using Candidate.Data;
 using Candidate.Interface;
-using Candidate.Rsps;
+using Candidate.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Candidate.Repository

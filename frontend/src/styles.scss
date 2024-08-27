@@ -11,7 +11,7 @@
 :root {
   --backgroundColor: #f7fcff;
   --color: #555555;
-  --primary-color: #183cfb;
+  --primary-color: #2e65f3;
   --input-color: #626263;
   --content-color: #e7eff2;
   --span-color-des: #000000;
@@ -21,7 +21,14 @@
   font-weight: 700;
   font-size: 15px;
   table {
-    border: 1px solid #DDDDDD !important;
+    border: 1px solid #dddddd !important;
+  }
+  a,
+  button {
+    font-size: 1rem;
+    min-width: 150px;
+    padding: 5px 10px;
+    border-radius: 5px;
   }
   .td-warning {
     font-weight: 400;
@@ -31,13 +38,48 @@
     height: 38.5px;
   }
   .form-content {
-    padding-right: 16%;
     margin-bottom: 1rem;
-    label {
+    label:not(.input-file) {
       height: fit-content;
     }
+    input[type="date"] {
+      cursor: pointer;
+    }
+    .input-file {
+      display: inline-block;
+      width: 250px;
+      font-size: 15px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background-color: #ffff !important;
+      height: 38px;
+      color: var(--input-color) !important;
+      font-weight: 500;
+      border: 1px solid #e1e2e2;
+      margin: 0;
+      line-height: 38px;
+      position: relative;
+      cursor: pointer;
+      .input-file-name {
+        display: inline-block;
+        max-width: 200px; /* Điều chỉnh kích thước tối đa của phần tử */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; /* Ngăn văn bản xuống dòng */
+      }
+      .icon-file {
+        display: inline-block;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+    input[type="file"] {
+      display: none;
+    }
     textarea {
-      width: 350px;
+      width: 100%;
       min-height: 155px;
       font-size: 15px;
       padding: 0 10px;
@@ -60,16 +102,24 @@
       font-weight: 400;
       line-height: 38px;
     }
-    input,
-    select {
+    input {
       width: 250px;
       font-size: 15px;
       padding: 0 10px;
       border-radius: 8px;
     }
-    .ng-select {
-      .ng-select-container {
-        border-radius: 8px;
+    input::placeholder,
+    textarea::placeholder {
+      color: #82858c;
+    }
+    .ng-select.ng-select-multiple {
+      &.ng-untouched,
+      &.ng-touched {
+        &.ng-select-bottom {
+          .ng-select-container {
+            padding-top: 0;
+          }
+        }
       }
       .ng-value-container {
         padding-top: 0;
@@ -78,20 +128,41 @@
           font-weight: 500;
           padding-bottom: 0;
         }
-
-        .ng-input {
-          padding-bottom: 0;
+        .ng-value {
+          margin-bottom: 0;
+          margin-top: 5px;
         }
       }
     }
-    .ng-select-container {
+    .ng-select {
       width: 250px;
+      padding-left: 0;
+      .ng-select-container {
+        width: 250px;
+        border-radius: 8px;
+      }
+      &.ng-untouched,
+      &.ng-touched {
+        &.ng-select-bottom {
+          .ng-select-container {
+            padding-top: 10px;
+          }
+        }
+      }
+      .ng-value-container {
+        padding-top: 0;
+        .ng-placeholder {
+          top: 8px;
+          font-weight: 500;
+          padding-bottom: 0;
+          color: #82858c;
+        }
+
+        .ng-input {
+          height: 36px;
+        }
+      }
     }
-  }
-  button,
-  a {
-    padding: 5px 10px;
-    border-radius: 5px;
   }
 }
 .pagination {
@@ -111,6 +182,13 @@
     }
   }
 }
+.btn-base {
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
 .btn-link {
   text-decoration: none;
   border: none;
@@ -118,13 +196,7 @@
     color: #fff;
   }
 }
-.btn-base {
-  border: 1px solid var(--primary-color);
-  width: 120px;
-  border-radius: 8px;
-  padding: 10px;
-  font-weight: 700;
-}
+
 button:disabled {
   opacity: 0.8;
 }
@@ -170,6 +242,10 @@ input[type="number"]::-webkit-outer-spin-button {
     width: calc(
       100% - 1em
     ); /* scrollbar is average 1em/16px width, remove it from thead width */
+    input[type="checkbox"] {
+      width: 10px;
+      height: 10px;
+    }
   }
   thead,
   tbody tr {
@@ -187,6 +263,9 @@ input[type="number"]::-webkit-outer-spin-button {
     word-wrap: break-word; /* Ngắt dòng từ khi vượt quá chiều rộng */
     text-overflow: ellipsis; /* Cắt bớt nội dung với dấu "..." nếu quá dài */
     overflow: hidden;
+    .status {
+      max-width: 100px;
+    }
   }
 }
 .modal {
@@ -211,5 +290,13 @@ input[type="number"]::-webkit-outer-spin-button {
         overflow: hidden;
       }
     }
+  }
+}
+.formSearch {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  select {
+    width: 250px;
   }
 }

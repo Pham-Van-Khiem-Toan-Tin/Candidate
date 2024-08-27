@@ -1,5 +1,5 @@
 <div class="input-search">
-    <input type="text" placeholder="Search by name" [formControl]="control">
+    <input type="text" [placeholder]="placeholder || 'Search by name'" [formControl]="control">
     <div class="icon">
         <ng-icon [svg]="icon" />        
     </div>

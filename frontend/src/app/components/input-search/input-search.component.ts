@@ -13,4 +13,5 @@ import { remixSearchLine } from '@ng-icons/remixicon';
 export class InputSearchComponent {
   icon = remixSearchLine;
   @Input() control!: FormControl;
+  @Input() placeholder: string = '';
 }

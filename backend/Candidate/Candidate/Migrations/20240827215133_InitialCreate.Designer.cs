@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Candidate.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240816131039_InitialCreate")]
+    [Migration("20240827215133_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,128 @@ namespace Candidate.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Candidate.Model.Application", b =>
+                {
+                    b.Property<string>("CandidateId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EventId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChannelId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CandidateId", "EventId", "ChannelId");
+
+                    b.HasIndex("ChannelId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Applications");
+                });
+
+            modelBuilder.Entity("Candidate.Model.CandidateInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ApplyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("GPA")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Graduation")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkCV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Major")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Skills")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UniversityId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WorkingTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UniversityId");
+
+                    b.ToTable("CandidateInfos");
+                });
+
+            modelBuilder.Entity("Candidate.Model.CandidatePositions", b =>
+                {
+                    b.Property<string>("CandidateInfoId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PositionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationCandidateId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationChannelId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationEventId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CandidateInfoId", "PositionId");
+
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("ApplicationCandidateId", "ApplicationEventId", "ApplicationChannelId");
+
+                    b.ToTable("CandidatesPositions");
+                });
 
             modelBuilder.Entity("Candidate.Model.Channel", b =>
                 {
@@ -69,6 +191,10 @@ namespace Candidate.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Target")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -108,6 +234,21 @@ namespace Candidate.Migrations
                     b.ToTable("EventPartners");
                 });
 
+            modelBuilder.Entity("Candidate.Model.EventPositions", b =>
+                {
+                    b.Property<string>("EventId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PositionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("EventId", "PositionId");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("EventPositions");
+                });
+
             modelBuilder.Entity("Candidate.Model.Partner", b =>
                 {
                     b.Property<string>("Id")
@@ -124,6 +265,79 @@ namespace Candidate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Partners");
+                });
+
+            modelBuilder.Entity("Candidate.Model.Position", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Positions");
+                });
+
+            modelBuilder.Entity("Candidate.Model.Role", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c2e61f75-6322-454d-962a-507d0e92530e",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "bdb82610-2e80-4fcb-a1b8-6fc73975fee7",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "89248af2-9b28-41f8-9423-6962f5f2fd3a",
+                            Name = "Leader",
+                            NormalizedName = "LEADER"
+                        });
                 });
 
             modelBuilder.Entity("Candidate.Model.User", b =>
@@ -174,7 +388,6 @@ namespace Candidate.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -206,51 +419,19 @@ namespace Candidate.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Candidate.Model.UserRoles", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.HasIndex("RoleId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "db122442-230f-4170-b573-a96f97138843",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "5bb8f6ef-3167-4b3b-926b-0f4719e12693",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "f60897ad-0368-4859-a2b0-09c8ac79a797",
-                            Name = "Leader",
-                            NormalizedName = "LEADER"
-                        });
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -325,21 +506,6 @@ namespace Candidate.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
@@ -357,6 +523,67 @@ namespace Candidate.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Candidate.Model.Application", b =>
+                {
+                    b.HasOne("Candidate.Model.CandidateInfo", "CandidateInfo")
+                        .WithMany("Applications")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Candidate.Model.Channel", "Channel")
+                        .WithMany("Applications")
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Candidate.Model.Event", "Event")
+                        .WithMany("Applications")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CandidateInfo");
+
+                    b.Navigation("Channel");
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("Candidate.Model.CandidateInfo", b =>
+                {
+                    b.HasOne("Candidate.Model.Partner", "Partner")
+                        .WithMany("CandidateInfos")
+                        .HasForeignKey("UniversityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Partner");
+                });
+
+            modelBuilder.Entity("Candidate.Model.CandidatePositions", b =>
+                {
+                    b.HasOne("Candidate.Model.CandidateInfo", "CandidateInfo")
+                        .WithMany("CandidatePositions")
+                        .HasForeignKey("CandidateInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Candidate.Model.Position", "Position")
+                        .WithMany("CandidatePositions")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Candidate.Model.Application", null)
+                        .WithMany("CandidateInfoPositions")
+                        .HasForeignKey("ApplicationCandidateId", "ApplicationEventId", "ApplicationChannelId");
+
+                    b.Navigation("CandidateInfo");
+
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("Candidate.Model.EventChannels", b =>
@@ -397,9 +624,47 @@ namespace Candidate.Migrations
                     b.Navigation("Partner");
                 });
 
+            modelBuilder.Entity("Candidate.Model.EventPositions", b =>
+                {
+                    b.HasOne("Candidate.Model.Event", "Event")
+                        .WithMany("EventPositions")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Candidate.Model.Position", "Position")
+                        .WithMany("EventPositions")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("Candidate.Model.UserRoles", b =>
+                {
+                    b.HasOne("Candidate.Model.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Candidate.Model.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Candidate.Model.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -424,21 +689,6 @@ namespace Candidate.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Candidate.Model.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("Candidate.Model.User", null)
@@ -448,21 +698,58 @@ namespace Candidate.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Candidate.Model.Application", b =>
+                {
+                    b.Navigation("CandidateInfoPositions");
+                });
+
+            modelBuilder.Entity("Candidate.Model.CandidateInfo", b =>
+                {
+                    b.Navigation("Applications");
+
+                    b.Navigation("CandidatePositions");
+                });
+
             modelBuilder.Entity("Candidate.Model.Channel", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("EventChannels");
                 });
 
             modelBuilder.Entity("Candidate.Model.Event", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("EventChannels");
 
                     b.Navigation("EventPartners");
+
+                    b.Navigation("EventPositions");
                 });
 
             modelBuilder.Entity("Candidate.Model.Partner", b =>
                 {
+                    b.Navigation("CandidateInfos");
+
                     b.Navigation("EventPartners");
+                });
+
+            modelBuilder.Entity("Candidate.Model.Position", b =>
+                {
+                    b.Navigation("CandidatePositions");
+
+                    b.Navigation("EventPositions");
+                });
+
+            modelBuilder.Entity("Candidate.Model.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Candidate.Model.User", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

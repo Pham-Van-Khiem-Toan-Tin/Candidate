@@ -6,7 +6,7 @@ namespace Candidate.Controllers
 {
     [Route("api/partner")]
     [ApiController]
-    public class PartnerController : Controller
+    public class PartnerController : ControllerBase
     {
         private readonly IPartnerRepository _partnerRepository;
         public PartnerController(IPartnerRepository partnerRepository)

@@ -6,7 +6,7 @@ namespace Candidate.Controllers
 {
     [Route("api/channel")]
     [ApiController]
-    public class ChannelController : Controller
+    public class ChannelController : ControllerBase
     {
         private readonly IChannelRepository _channelRepository;
         public ChannelController(IChannelRepository channelRepository) 

@@ -1,4 +1,4 @@
-﻿using Candidate.Rsps;
+﻿using Candidate.DTOs;
 
 namespace Candidate.Interface
 {
