@@ -1,6 +1,6 @@
 <app-layout fc="Candidate Management" mt="Create Candidate">
     <div class="candidate-create">
-        <form class="form-multiple-input" [formGroup]="candidateForm">
+        <form class="form-multiple-input" [formGroup]="candidateForm" (submit)="createCandidate()">
             <p class="form-title">I. Personal Information</p>
             <div class="row">
                 <div class="form-content row align-items-center col-6">
@@ -96,7 +96,7 @@
                     <label class="col-6" for="graduationYear">
                         Graduation year <span class="text-danger">*</span>
                     </label>
-                    <ng-select labelForId="graduationYear" formControlName="graduationYear" [searchable]="false" placeholder="Select a year" [clearable]="false" [multiple]="true">
+                    <ng-select labelForId="graduationYear" formControlName="graduationYear" [searchable]="false" placeholder="Select a year" [clearable]="false">
                         @for (item of years; track $index) {
                             <ng-option [value]="item">{{item}}</ng-option>
                         }
@@ -112,7 +112,7 @@
                             <ng-icon [svg]="icons['remixAttachmentLine']" />
                         </div>
                     </label>
-                    <input id="linkCV" (change)="onFileChange($event)" accept=".pdf" formControlName="linkCV" type="file">
+                    <input id="linkCV" (change)="onFileChange($event)" accept=".pdf" type="file">
                 </div>
                 <div class="form-content row align-items-center  col-6">
                     <label class="col-6" for="GPA">
