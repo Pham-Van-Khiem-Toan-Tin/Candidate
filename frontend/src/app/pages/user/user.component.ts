@@ -24,6 +24,7 @@ import {
   NgLabelTemplateDirective,
   NgOptionTemplateDirective,
   NgSelectComponent,
+  NgSelectModule,
 } from '@ng-select/ng-select';
 import { ModalConfirmComponent } from '../../components/modal-confirm/modal-confirm.component';
 import Modal from '../../models/Modal';
@@ -41,6 +42,7 @@ import { catchError, throwError } from 'rxjs';
     NgSelectComponent,
     NgOptionTemplateDirective,
     NgLabelTemplateDirective,
+    NgSelectModule,
     ModalConfirmComponent,
   ],
   templateUrl: './user.component.html',
@@ -71,7 +73,7 @@ export class UserComponent implements OnInit {
   ) {
     this.searchForm = this.fb.group({
       name: [''],
-      status: [''],
+      status: null,
     });
   }
   ngOnInit(): void {
@@ -183,7 +185,7 @@ export class UserComponent implements OnInit {
   clearForm(): void {
     this.searchForm.patchValue({
       name: '',
-      status: '',
+      status: null,
     });
     this.currentPage = 1;
     this.loadUsers();

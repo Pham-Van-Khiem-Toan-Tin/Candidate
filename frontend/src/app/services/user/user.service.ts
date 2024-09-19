@@ -15,7 +15,7 @@ export class UserService {
     return this.http.get<any>(
       `${USER_API_ENDPOINT.ALL_USER}?name=${
         searchForm.get('name')?.value
-      }&status=${searchForm.get('status')?.value}`
+      }&status=${searchForm.get('status')?.value ?? ""}`
     );
   }
   getUser(id: string): Observable<any> {

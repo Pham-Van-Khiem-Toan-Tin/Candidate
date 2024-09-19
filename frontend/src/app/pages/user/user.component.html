@@ -2,22 +2,23 @@
   <div class="user-list mt-4">
     <div class="top">
       <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="formSearch">
-        <app-input-search [control]="getControl('name')"></app-input-search>
-        <select defaultValue="" [formControl]="getControl('status')">
-          <option value="">Select a status</option>
-          <option value="Deactivated">Deactivated</option>
-          <option value="Activated">Activated</option>
-        </select>
-        <button class="btn-base btn-handle" type="submit">Search</button>
-        <button class="btn-base btn-cancel" (click)="clearForm()">Clear search</button>
+        <div class="search-base">
+          <app-input-search [control]="getControl('name')"></app-input-search>
+          <ng-select formControlName="status" [searchable]="false" placeholder="Select channel">
+            <ng-option value="Deactivated">Deactivated</ng-option>
+            <ng-option value="Activated">Activated</ng-option>
+          </ng-select>
+          <button class="btn-base btn-handle" type="submit">Search</button>
+          <button class="btn-base btn-cancel" (click)="clearForm()">Clear search</button>
+        </div>
       </form>
     </div>
-    <div class="middle mt-4 d-flex align-content-center justify-content-between">
+    <div class="middle action-group mt-4 d-flex align-content-center justify-content-between">
       <a href="/users/create" class="btn-link btn-base btn-handle">Create user</a>
-      <button class="btn-base btn-cancel" (click)="exportUsers()">Export</button>
+      <button class="btn-base btn-cancel btn-export" (click)="exportUsers()">Export</button>
     </div>
-    <div class="bottom mt-3">
-      <table class="table table-responsive table-list table-striped table-borderless">
+    <div class="bottom mt-3 table-responsive">
+      <table class="table table-list table-striped table-borderless">
         <thead class="table-light">
           <tr>
             <th scope="col">Full Name</th>
@@ -32,14 +33,14 @@
         </thead>
         <tbody>
           @if (users.length == 0) {
-            <tr>
-              <p class="d-block w-100 text-center">No User Match</p>
-            </tr>
+          <tr>
+            <td colspan="8" class="w-100 text-center">No User Match</td>
+          </tr>
           }
           @for (user of users; track user.id) {
           <tr>
 
-            <td>{{ user.fullName }}</td>
+            <td class="color-primary">{{ user.fullName }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.phoneNumber }}</td>
             <td>{{convertToDDMMYYYY(user.dateOfBirth)}}</td>
@@ -60,10 +61,8 @@
                   <ng-icon [svg]="icons['remixLockLine']" />
                   } @else {
                   <ng-icon [svg]="icons['remixLockUnlockLine']" />}</button>
-                <button class="btn-icon text-danger" 
-                data-bs-toggle="modal" 
-                data-bs-target="#modalConfirm" 
-                (click)="openModalDelete(user)">
+                <button class="btn-icon text-danger" data-bs-toggle="modal" data-bs-target="#modalConfirm"
+                  (click)="openModalDelete(user)">
                   <ng-icon [svg]="icons['remixDeleteBin5Line']" /></button>
               </div>
               <!-- Thêm các hành động như xem chi tiết, chỉnh sửa, xóa, vv. -->

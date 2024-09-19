@@ -10,6 +10,9 @@ import { FormGroup } from '@angular/forms';
 export class CandidateService {
   http = inject(HttpClient)
   constructor() { }
+  getAllCandidate(): Observable<any> {
+    return this.http.get<any>(`${CANDIDATE_API_ENDPOINT.ALL_CANDIDATE}`);
+  }
   createCandidate(candidate: FormGroup, candidateFormData: FormData): Observable<any> {
     let dataFormData = new FormData();
     const appendValue = (key: string, value: any) => {
@@ -21,7 +24,6 @@ export class CandidateService {
         }
       }
     };
-  
     appendValue("Id", candidate.get("idCard")?.value);
     appendValue("FullName", candidate.get("fullName")?.value);
     appendValue("Email", candidate.get("email")?.value);

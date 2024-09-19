@@ -30,10 +30,17 @@ namespace Candidate.Migrations
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("ApplyDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ChannelId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("CandidateId", "EventId", "ChannelId");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CandidateId", "EventId");
 
                     b.HasIndex("ChannelId");
 
@@ -51,7 +58,7 @@ namespace Candidate.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ApplyDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfBirth")
@@ -107,6 +114,10 @@ namespace Candidate.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("WorkingTime")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -114,6 +125,8 @@ namespace Candidate.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("UniversityId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CandidateInfos");
                 });
@@ -123,23 +136,15 @@ namespace Candidate.Migrations
                     b.Property<string>("CandidateInfoId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("EventId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("PositionId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationCandidateId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationChannelId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationEventId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CandidateInfoId", "PositionId");
+                    b.HasKey("CandidateInfoId", "EventId", "PositionId");
 
                     b.HasIndex("PositionId");
-
-                    b.HasIndex("ApplicationCandidateId", "ApplicationEventId", "ApplicationChannelId");
 
                     b.ToTable("CandidatesPositions");
                 });
@@ -319,19 +324,19 @@ namespace Candidate.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c2e61f75-6322-454d-962a-507d0e92530e",
+                            Id = "91da66d2-36cc-40c3-89fc-393484c85639",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "bdb82610-2e80-4fcb-a1b8-6fc73975fee7",
+                            Id = "e28b0eea-2d62-416d-bbeb-a0c2d647ec0d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "89248af2-9b28-41f8-9423-6962f5f2fd3a",
+                            Id = "21654653-9bc4-4dc0-87e8-0a225bbbe524",
                             Name = "Leader",
                             NormalizedName = "LEADER"
                         });
@@ -557,12 +562,20 @@ namespace Candidate.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Candidate.Model.User", "User")
+                        .WithMany("CandidateInfos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Partner");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Candidate.Model.CandidatePositions", b =>
                 {
-                    b.HasOne("Candidate.Model.CandidateInfo", "CandidateInfo")
+                    b.HasOne("Candidate.Model.CandidateInfo", null)
                         .WithMany("CandidatePositions")
                         .HasForeignKey("CandidateInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -574,11 +587,13 @@ namespace Candidate.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Candidate.Model.Application", null)
-                        .WithMany("CandidateInfoPositions")
-                        .HasForeignKey("ApplicationCandidateId", "ApplicationEventId", "ApplicationChannelId");
+                    b.HasOne("Candidate.Model.Application", "Application")
+                        .WithMany("CandidatePositions")
+                        .HasForeignKey("CandidateInfoId", "EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("CandidateInfo");
+                    b.Navigation("Application");
 
                     b.Navigation("Position");
                 });
@@ -697,7 +712,7 @@ namespace Candidate.Migrations
 
             modelBuilder.Entity("Candidate.Model.Application", b =>
                 {
-                    b.Navigation("CandidateInfoPositions");
+                    b.Navigation("CandidatePositions");
                 });
 
             modelBuilder.Entity("Candidate.Model.CandidateInfo", b =>
@@ -746,6 +761,8 @@ namespace Candidate.Migrations
 
             modelBuilder.Entity("Candidate.Model.User", b =>
                 {
+                    b.Navigation("CandidateInfos");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

@@ -1,7 +1,10 @@
 ﻿using Candidate.Form;
 using Candidate.Interface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Candidate.Controllers
 {
@@ -13,6 +16,13 @@ namespace Candidate.Controllers
         public CandidateController(ICandidateRepository candidateRepository)
         {
             _candidateRepository = candidateRepository;
+        }
+        [AllowAnonymous]
+        [HttpGet("all")]
+        public async Task<IActionResult> Search()
+        {
+            var candidates = await _candidateRepository.GetAllCandidate();
+            return Ok(candidates);
         }
         [Authorize(Roles = "Admin")]
         [HttpPost("create")]

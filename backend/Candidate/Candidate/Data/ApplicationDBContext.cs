@@ -43,6 +43,24 @@ namespace Candidate.Data
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
             });
+            List<Role> roles = new List<Role> {
+                new Role
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                },
+                new Role
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new Role
+                {
+                    Name = "Leader",
+                    NormalizedName = "LEADER"
+                }
+            };
+            builder.Entity<Role>().HasData(roles);
             builder.Entity<EventPartners>()
                 .HasKey(ep => new { ep.EventId, ep.PartnerId });
             builder.Entity<EventPartners>()
@@ -77,45 +95,33 @@ namespace Candidate.Data
                 .HasOne(ep => ep.Position)
                 .WithMany(p => p.EventPositions)
                 .HasForeignKey(ep => ep.PositionId);
-            List<Role> roles = new List<Role> {
-                new Role
-                {
-                    Name = "User",
-                    NormalizedName = "USER"
-                },
-                new Role
-                {
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new Role
-                {
-                    Name = "Leader",
-                    NormalizedName = "LEADER"
-                }
-            };
-            builder.Entity<Role>().HasData(roles);
             builder.Entity<Application>()
-                    .HasKey(a => new { a.CandidateId, a.EventId, a.ChannelId });
+                    .HasKey(a => new { a.CandidateId, a.EventId });
             builder.Entity<Application>()
                 .HasOne(a => a.CandidateInfo)
                 .WithMany(c => c.Applications)
                 .HasForeignKey(a => a.CandidateId);
             builder.Entity<CandidatePositions>()
-                    .HasKey(ca => new { ca.CandidateInfoId, ca.PositionId });
+                    .HasKey(ca => new { ca.CandidateInfoId, ca.EventId, ca.PositionId });
             builder.Entity<CandidatePositions>()
-                .HasOne(cj => cj.CandidateInfo)
+                .HasOne(cj => cj.Application)
                 .WithMany(c => c.CandidatePositions)
-                .HasForeignKey(cj => cj.CandidateInfoId);
+                .HasForeignKey(cj => new { cj.CandidateInfoId, cj.EventId })
+                .OnDelete(DeleteBehavior.Cascade); ;
 
             builder.Entity<CandidatePositions>()
                 .HasOne(cj => cj.Position)
                 .WithMany(j => j.CandidatePositions)
-                .HasForeignKey(cj => cj.PositionId);
+                .HasForeignKey(cj => cj.PositionId)
+                .OnDelete(DeleteBehavior.Cascade); ;
             builder.Entity<CandidateInfo>()
                 .HasOne(c => c.Partner)
                 .WithMany(u => u.CandidateInfos)
                 .HasForeignKey(c => c.UniversityId);
+            builder.Entity<CandidateInfo>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.CandidateInfos)
+                .HasForeignKey(c => c.UserId);
             builder.Entity<Application>()
                 .HasOne(a => a.CandidateInfo)
                 .WithMany(c => c.Applications)
@@ -128,7 +134,7 @@ namespace Candidate.Data
                 .HasOne(a => a.Channel)
                 .WithMany(c => c.Applications)
                 .HasForeignKey(a => a.ChannelId);
-
+            
         }
     }
 }

@@ -2,22 +2,24 @@
   <div class="event-list">
     <div class="top">
       <form [formGroup]="searchForm" (ngSubmit)="loadEvent()" class="formSearch">
-        <app-input-search [control]="getControl('name')"></app-input-search>
-        <div class="d-flex align-items-center gap-2">
-          <span class="">Event Date</span>
-          <input type="date" [formControl]="getControl('startDate')">
-          <input type="date" [formControl]="getControl('endDate')">
+        <div class="search-base">
+          <app-input-search [control]="getControl('name')"></app-input-search>
+          <div class="d-flex align-items-center gap-2">
+            <span class="">Event Date</span>
+            <input type="date" [formControl]="getControl('startDate')">
+            <input type="date" [formControl]="getControl('endDate')">
+          </div>
+          <button class="btn-base btn-handle" type="submit">Search</button>
+          <button class="btn-base btn-cancel" (click)="clearForm()">Clear search</button>
         </div>
-        <button class="btn-base btn-handle" type="submit">Search</button>
-        <button class="btn-base btn-cancel" (click)="clearForm()">Clear search</button>
       </form>
     </div>
-    <div class="middle mt-4 d-flex align-content-center justify-content-between">
+    <div class="middle action-group mt-4 d-flex align-content-center justify-content-between">
       <a href="/events/create" class="btn-link btn-base btn-handle">Create Event</a>
-      <button class="btn-base btn-cancel" (click)="exportEvent()">Export</button>
+      <button class="btn-base btn-cancel btn-export" (click)="exportEvent()">Export</button>
     </div>
-    <div class="bottom mt-3">
-      <table class="table table-responsive table-list table-striped table-borderless">
+    <div class="bottom mt-3 table-responsive-xl">
+      <table class="table table-list table-striped table-borderless">
         <thead class="table-light">
           <tr>
             <th scope="col">Event Name</th>
@@ -34,12 +36,12 @@
         <tbody>
           @if (events.length == 0) {
           <tr>
-            <td colspan="9" class="d-block w-100 text-center">No Event Match</td>
+            <td colspan="9" class="w-100 text-center">No Event Match</td>
           </tr>
           }
           @for (event of events; track event.id) {
           <tr>
-            <td>{{ event.name }}</td>
+            <td class="color-primary">{{ event.name }}</td>
             <td>{{ getChanel(event.channels) }}</td>
             <td>
               {{ 'From: ' + convertToDate(event.startDate, "DD/MM/YYYY") + " To: " + convertToDate(event.endDate, "DD/MM/YYYY") }}

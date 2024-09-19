@@ -17,6 +17,9 @@
   --span-color-des: #000000;
   --height-table-list: calc(100vh - 8rem - 238px);
 }
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
+  top: 0;
+}
 .form-multiple-input {
   font-weight: 700;
   font-size: 15px;
@@ -50,7 +53,7 @@
       width: 250px;
       font-size: 15px;
       padding: 0 10px;
-      border-radius: 8px;
+      border-radius: 6px;
       background-color: #ffff !important;
       height: 38px;
       color: var(--input-color) !important;
@@ -86,7 +89,7 @@
       outline: none;
       background-color: #ffff !important;
       height: 38px;
-      border-radius: 8px;
+      border-radius: 6px;
       color: var(--input-color) !important;
       font-weight: 500;
       border: 1px solid #e1e2e2;
@@ -106,7 +109,7 @@
       width: 250px;
       font-size: 15px;
       padding: 0 10px;
-      border-radius: 8px;
+      border-radius: 6px;
     }
     input::placeholder,
     textarea::placeholder {
@@ -134,34 +137,43 @@
         }
       }
     }
+    
     .ng-select {
       width: 250px;
       padding-left: 0;
       .ng-select-container {
         width: 250px;
-        border-radius: 8px;
       }
-      &.ng-untouched,
-      &.ng-touched {
-        &.ng-select-bottom {
-          .ng-select-container {
-            padding-top: 10px;
-          }
-        }
-      }
-      .ng-value-container {
-        padding-top: 0;
-        .ng-placeholder {
-          top: 8px;
-          font-weight: 500;
-          padding-bottom: 0;
-          color: #82858c;
-        }
-
-        .ng-input {
-          height: 36px;
-        }
-      }
+      
+    }
+  }
+}
+.ng-select {
+  .ng-select-bottom {
+    .ng-option  {
+      font-size: 15px;
+      font-weight: 700;
+    }
+  }
+  .ng-select-container { 
+    border-radius: 6px;
+  }
+  .ng-value-container {
+    .ng-placeholder {
+      top: 8px;
+      font-weight: 500;
+      padding-bottom: 0;
+      color: #82858c;
+      font-size: 15px;
+    }
+    .ng-value {
+      color: var(--input-color);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .ng-input {
+      height: 36px;
+      
     }
   }
 }
@@ -184,7 +196,7 @@
 }
 .btn-base {
   border: 1px solid var(--primary-color);
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 10px;
   font-weight: 700;
   font-size: 0.8rem;
@@ -219,7 +231,7 @@ select {
   outline: none;
   background-color: #ffff !important;
   height: 38px;
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--input-color) !important;
   font-size: 13px;
   font-weight: 500;
@@ -243,20 +255,37 @@ input[type="number"]::-webkit-outer-spin-button {
       100% - 1em
     ); /* scrollbar is average 1em/16px width, remove it from thead width */
     input[type="checkbox"] {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
+    }
+    tr {
+      font-size: 0.9rem;
+      .label-select-all {
+        color: var(--color);
+        font-size: 0.7rem;
+        font-weight: 400;
+      }
     }
   }
-  thead,
-  tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed; /* even columns width , fix width of table too*/
-  }
+
   tbody {
-    height: var(--height-table-list);
-    overflow-y: auto;
-    display: block;
+    .color-primary {
+      color: var(--primary-color);
+    }
+    td {
+      font-size: 0.8rem;
+      font-weight: 500;
+      input[type="checkbox"] {
+        width: 11px;
+        height: 11px;
+      }
+      .btn-icon-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap;
+      }
+    }
   }
   td,
   th {
@@ -293,10 +322,100 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 .formSearch {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  select {
-    width: 250px;
+  .search-base {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    input::placeholder {
+      font-size: 15px;
+    }
+    .ng-select {
+      width: 250px;
+      .ng-select-container {
+        width: 250px;
+      }
+    }
+    .advanced-filter-btn {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+    button,
+    .btn-link {
+      width: 100px;
+      font-size: 0.8rem;
+      padding: 8px;
+      text-align: center;
+    }
+  }
+  .advanced-filter {
+    padding: 10px;
+    margin-top: 1rem;
+    box-shadow: inset 0 5px 15px -5px #bcbcbc, inset 0 -1px 5px -2px #bcbcbc,
+      inset 1px 0 5px -2px #bcbcbc, inset -1px 0 5px -2px #bcbcbc;
+    .advanced-filter-top {
+      span {
+        font-size: 0.8rem;
+        color: var(--primary-color);
+      }
+      .btn-apply {
+        padding: 3px 15px;
+        border-radius: 4px;
+        width: auto;
+      }
+      .btn-clear {
+        padding: 0;
+        width: auto;
+        border: none;
+        text-decoration: underline;
+      }
+    }
+    .advanced-filter-bottom {
+      label {
+        font-weight: 500;
+        font-size: 0.8rem;
+      }
+      margin-top: 10px;
+      .form-content {
+        & > .ng-select {
+          width: 200px;
+          .ng-select-container {
+            width: 200px;
+            border-radius: 6px;
+          }
+        }
+        .input-group-container {
+          display: inline-flex;
+          padding-left: 0;
+          gap: 10px;
+          width: auto;
+          input {
+            width: 95px;
+          }
+          .ng-select {
+            width: 95px;
+            .ng-select-container {
+              width: 95px;
+            }
+          }
+        }
+      }
+      select,
+      input {
+        width: 200px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+.action-group {
+  a {
+    padding: 9px 8px !important;
+  }
+  button {
+    padding: 8px !important;
+  }
+  .btn-export {
+    padding: 8px 1.75rem !important;
   }
 }
