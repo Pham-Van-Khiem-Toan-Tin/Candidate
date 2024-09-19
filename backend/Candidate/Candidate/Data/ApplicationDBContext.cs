@@ -107,13 +107,13 @@ namespace Candidate.Data
                 .HasOne(cj => cj.Application)
                 .WithMany(c => c.CandidatePositions)
                 .HasForeignKey(cj => new { cj.CandidateInfoId, cj.EventId })
-                .OnDelete(DeleteBehavior.Cascade); ;
+                .OnDelete(DeleteBehavior.NoAction); ;
 
             builder.Entity<CandidatePositions>()
                 .HasOne(cj => cj.Position)
                 .WithMany(j => j.CandidatePositions)
                 .HasForeignKey(cj => cj.PositionId)
-                .OnDelete(DeleteBehavior.Cascade); ;
+                .OnDelete(DeleteBehavior.NoAction); ;
             builder.Entity<CandidateInfo>()
                 .HasOne(c => c.Partner)
                 .WithMany(u => u.CandidateInfos)
